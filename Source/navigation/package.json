@@ -1,0 +1,14 @@
+{
+  "name": "navigation",
+  "version": "1.0.0",
+  "description": "contains all containers",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Domey Benjamin",
+  "license": "ISC",
+  "dependencies": {
+    "react-navigation-material-bottom-tabs": "^1.0.0"
+  }
+}
