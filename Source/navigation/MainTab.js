@@ -3,68 +3,48 @@ import { Platform, Image } from 'react-native'
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
 import { createStackNavigator } from 'react-navigation'
 import Icon from 'react-native-vector-icons/Ionicons'
+import HomeStack from './HomeStack'
+import ProfileStack from './ProfileStack';
+import SettingsStack from './SettingsStack'
+import CartStack from './CartStack'
 
-
-const HomeStack = createStackNavigator({
-    Home
-},{
-    initialRouteName: 'Home',
-    headerMode: 'none'
-})
-
-HomeStack.navigationOptions = {
-    tabBarLabel: Home,
-    tabBarIcon: ({focused,tintcolor}) => <Icon size={Platform.OS == "android" ? 30 : 1} focused={focused} color={tintcolor} name={Platform.OS == "android" ? 'md-home' : 'ios-home'} />
-}
-
-const ProfileStack = createStackNavigator({
-    Profile
-},{
-    initialRouteName: 'Profile',
-    headerMode: 'none'
-})
-
-ProfileStack.navigationOptions = {
-    tabBarLabel: Profile,
-    tabBarIcon: ({focused,tintcolor}) => < Icon size = {Platform.OS == "android" ? 30 : 1} focused = {focused} color = {tintcolor} name = {Platform.OS == "android" ? 'md-contact' : 'ios-contact'} />
-}
-
-const SettingsStack = createStackNavigator({
-    Settings
-},{
-    initialRouteName: 'Settings',
-    headerMode: 'none',
-})
-
-SettingsStack.navigationOptions = {
-    tabBarLabel: Settings,
-    tabBarIcon: ({focused,tintColor}) => <Icon size={Platform.OS == "android" ? 30 : 1} focused={focused} color={tintColor} name={Platform.OS == "android" ? 'md-settings' : 'ios-settings'} />
-}
-
-const Cart = createStackNavigator({
-    Cart
-},{
-    initialRouteName: 'Cart',
-    headerMode: 'none'
-})
-
-cart.navigationOptions = {
-    tabBarLabel: Cart,
-    tabBarIcon: ({focused,tintColor}) => <Image source={require('../assets/shopping-bag.png')} style={{color: tintColor, height: 30, width: 30}} />
-}
 
 export default createMaterialBottomTabNavigator({
-    HomeStack,
-    AccountStack,
-    SettingsStack,
-    Cart
+    Home:{
+        screen: HomeStack,
+        navigationOptions: {
+            header: null,
+            tabBarLabel: 'Home',
+            tabBarIcon: ({focused, tintColor}) => < Icon focused = {focused} color = {tintColor} size = {Platform.OS == "android" ? 28 : 1 } name = {Platform.OS == "android" ? 'md-home' : 'ios-home'}/>
+        }
+    },
+    Profile:{
+        screen: ProfileStack,
+        navigationOptions: {
+            tabBarLabel: 'Profile',
+            tabBarIcon: ({focused, tintColor}) => < Icon focused = {focused} color = {tintColor} size = {Platform.OS == "android" ? 28 : 1 } name = {Platform.OS == "android" ? 'md-contact' : 'ios-contact'}/>
+        }
+    },
+    Settings:{
+        screen: SettingsStack,
+        navigationOptions: {
+            tabBarLabel: 'Settings',
+            tabBarIcon: ({focused, tintColor}) => < Icon focused = {focused} color = {tintColor} size = {Platform.OS == "android" ? 28 : 1 } name = {Platform.OS == "android" ? 'md-settings' : 'ios-settings'}/>
+        }
+    },
+    Cart:{
+        screen: CartStack,
+        navigationOptions: {
+            tabBarLabel: 'Cart',
+            tabBarIcon: ({focused, tintColor}) => < Icon focused = {focused} color = {tintColor} size = {Platform.OS == "android" ? 28 : 1 } name = {Platform.OS == "android" ? 'md-cart' : 'ios-cart'}/>
+        }
+    }
 },{
     shifting: true,
-    initialRouteName: 'HomeStack',
+    initialRouteName: 'Home',
     activeColor: 'red',
     barStyle:{
-        background: '#fff',
-        borderBottomRightRadius: 5,
-        borderTopLeftRadius: 5
-    }
+        backgroundColor: '#fff',
+    },
+    // labeled: false
 })
