@@ -1,0 +1,11 @@
+{
+  "name": "screens",
+  "version": "1.0.0",
+  "description": "this directory holds all screens in the mobile application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Domey Benjamin",
+  "license": "ISC"
+}
