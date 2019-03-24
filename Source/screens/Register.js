@@ -3,7 +3,6 @@ import { TouchableOpacity, View, Text, Button, ScrollView, Image, KeyboardAvoidi
 import { RegisterStyle } from 'styles'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { RaisedTextButton } from 'react-native-material-buttons'
-import registerStyle from '../styles/registerStyle';
 
 class Register extends React.Component {
      constructor(props) {
@@ -47,11 +46,11 @@ class Register extends React.Component {
                 <Icon name={Platform.OS == 'android' ? 'md-mail' : 'ios-mail'} color={"black"} size={Platform.OS == "android" ? 20 : 1} style={{position: 'relative', left: 25}} />
                 <TextInput style={RegisterStyle.textViewNode} placeholderTextColor={"black"} value={email} onChangeText={(value) => this.setState({email: value})} placeholder={"Email"} keyboardType={'email-address'} underlineColorAndroid={'#bfbfbf'} />
               </View>
-              <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center',}}>
+              <View style={{flexDirection: 'row', marginBottom: 8, justifyContent: 'center', alignItems: 'center',}}>
                 <Icon name={Platform.OS == "android" ? 'md-key' : 'ios-key'} color={"black"} size={Platform.OS == "android" ? 20 : 1} style={{position: 'relative', left: 25}} />
                 <TextInput style={RegisterStyle.textViewNode} placeholderTextColor={"black"} value={password} onChangeText={(value) => {this.setState({password:value})}} placeholder={"Password"} secureTextEntry={true} underlineColorAndroid={'#bfbfbf'} />
               </View>
-              <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center',}}>
+              <View style={{flexDirection: 'row', marginBottom: 8, justifyContent: 'center', alignItems: 'center',}}>
                 <Icon name={Platform.OS == "android" ? 'md-key' : 'ios-key'} color={"black"} size={Platform.OS == "android" ? 20 : 1} style={{position: 'relative', left: 25}} />
                 <TextInput style={RegisterStyle.textViewNode} placeholderTextColor={"black"} value={confirmPassword} onChangeText={(value) => {this.setState({confirmPassword:value})}} placeholder={"Confirm Password"} secureTextEntry={true} underlineColorAndroid={'#bfbfbf'} />
               </View>
@@ -72,9 +71,7 @@ class Register extends React.Component {
                 <Icon name={Platform.OS == "android" ? 'logo-googleplus' : 'logo-googleplus'} color={'#e2c012'} size={20}/>
               </View>
               <View style={{backgroundColor: '#fff',marginLeft:8, borderColor: '#e2c012', borderRadius: 20, borderWidth: 1, padding: 9}}>
-                {/* <Text style={{color: '#e2c012',}}>f</Text> */}
                 <Icon name={Platform.OS == "android" ? 'logo-facebook' : 'logo-facebook'} color={'#e2c012'} size={20}/>
-
               </View>
             </View>
         </ScrollView>

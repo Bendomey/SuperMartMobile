@@ -20,6 +20,10 @@ class Login extends React.Component {
       this.props.navigation.navigate("Register")
     }
 
+    _skipNow = () => {
+      this.props.navigation.navigate("MainTabs")
+    }
+
     render() {
       const { email, password } = this.state
       return (
@@ -60,6 +64,9 @@ class Login extends React.Component {
 
               </View>
             </View>
+            <TouchableOpacity onPress={this._skipNow} style={{width: '95%',display: 'flex', flexDirection: 'row', justifyContent: 'flex-end'}}>
+              <Text style={{color: '#e2c012'}}>Skip Now <Icon name={Platform.OS == 'android' ? 'md-arrow-round-forward' : 'ios-arrow-round-forward'} size={15} color={'#e2c012'} /></Text>
+            </TouchableOpacity>
         </ScrollView>
       )
     }
