@@ -4,8 +4,8 @@ import MainTabs from './MainTab'
 import {Login, Register } from 'screens'
 
 const container = createSwitchNavigator({
-    // Login,
-    // Register,
+    Login,
+    Register,
     MainTabs
 })
 
