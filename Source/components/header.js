@@ -6,9 +6,6 @@ import Icon from 'react-native-vector-icons/Ionicons'
 const Header = (props) => {
     return(
         <View style={HeaderStyle.container}>
-            <TouchableOpacity onPress={props._openDrawer} style={HeaderStyle.menuIcon}>
-                <Icon name={Platform.OS == 'android' ? 'md-menu' : 'ios-menu'} size={Platform.OS == 'android' ? 25: 1} color={'#fff'} />
-            </TouchableOpacity>
             <View style={HeaderStyle.applicationName}>
                 <Text style={{color: '#fff', fontWeight: 'bold', fontSize: 20,}}>Super Mart</Text>
             </View>

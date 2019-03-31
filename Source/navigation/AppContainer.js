@@ -7,7 +7,8 @@ const container = createSwitchNavigator({
     Login,
     Register,
     MainTabs
-    // Drawer
+},{
+	initialRouteName: 'MainTabs'
 })
 
 export default createAppContainer(container)

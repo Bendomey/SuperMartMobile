@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Modal, Platform, TextInput, TouchableOpacity } from 'react-native'
+import { View, Text, Modal, Platform, TextInput, TouchableOpacity, StatusBar } from 'react-native'
 import { Header } from 'components'
 import { HomeStyle } from 'styles'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -34,6 +34,7 @@ class Home extends React.Component {
       const { visibility, search } = this.state
       return (
         <View style={HomeStyle.container}>
+            <StatusBar backgroundColor="red" barStyle="light-content"/>
             <Header _openDrawer={this._handleOpenDrawer} openSearchStack={this._handleOpenSearchStack} openNotification={this._handleOpenNotificationModal} / >
             <Text>Home</Text>
             <Modal visible={visibility} animationType={"fade"}>

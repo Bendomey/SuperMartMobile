@@ -40,7 +40,7 @@ export default createMaterialBottomTabNavigator({
     }
 },{
     shifting: true,
-    initialRouteName: 'Home',
+    initialRouteName: 'Settings',
     activeColor: 'red',
     barStyle:{
         backgroundColor: '#fff',

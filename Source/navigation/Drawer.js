@@ -1,10 +1,11 @@
 import React from 'react'
 import { createDrawerNavigator, createAppContainer, DrawerItems } from 'react-navigation'
 import MainTabs from './MainTab'
+import { Home } from 'screens'
 import { View, Text, ScrollView, Image } from 'react-native'
 
 const HomeDrawer = createDrawerNavigator({
-    Home: MainTabs,
+    Home,
 },{
     initialRouteName: 'Home',
     contentOptions: {
