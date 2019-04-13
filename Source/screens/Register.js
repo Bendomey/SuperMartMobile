@@ -1,8 +1,15 @@
 import React from 'react'
-import { TouchableOpacity, View, Text, Button, ScrollView, Image, KeyboardAvoidingView, TextInput, Platform } from 'react-native'
+import { TouchableOpacity, View, Text, Button, ScrollView, Image, KeyboardAvoidingView, TextInput, Platform, StatusBar, ActivityIndicator } from 'react-native'
 import { RegisterStyle } from 'styles'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { RaisedTextButton } from 'react-native-material-buttons'
+import Modal from 'react-native-modal'
+import NetInfo from "@react-native-community/netinfo"
+import { emailChecker } from 'constants'
+import { SIGNUP_URL } from 'react-native-dotenv'
+import AsyncStorage from '@react-native-community/async-storage'
+
+
 
 class Register extends React.Component {
      constructor(props) {
@@ -12,23 +19,97 @@ class Register extends React.Component {
          contact: '',
          email: '',
          password: '',
-         confirmPassword: ''
+         confirmPassword: '',
+         visibility: false,
+         networkVisibility: false,
+         isConnected: false,
+         errorMsg: ''
        }
      }
+
+
+    componentDidMount(){
+      this._isMounted = true;
+      const listener = data => {
+        NetInfo.isConnected.fetch().then(isConnected => {
+          this.setState({isConnected})
+        })
+      }
+      if(this._isMounted){
+        const subscription = NetInfo.addEventListener('connectionChange',listener);     
+      }
+    }
+
+     handleSignUp = () => {
+        const { fullName, contact, email, password, confirmPassword, isConnected } = this.state
+        //check the network
+        const listener = data => {
+          NetInfo.isConnected.fetch().then(isConnected => {
+            this.setState({isConnected})
+          })
+        }
+        const subscription = NetInfo.addEventListener('connectionChange',listener);     
+        if(isConnected == false){
+          this.setState({networkVisibility: true});
+        }else{
+          if(fullName == ''){
+            this.setState({errorMsg: 'Name field is empty'});
+          }else if(contact == ''){
+            this.setState({errorMsg: 'Contact field is empty'});
+          }else if(email == ''){
+            this.setState({errorMsg: 'Email field is empty'});
+          }else if(password == ''){
+            this.setState({errorMsg: 'Password field is empty'});
+          }else if(confirmPassword == ''){
+            this.setState({errorMsg: 'Confirm password field is empty'});
+          }else if(password != confirmPassword){
+            this.setState({errorMsg:'Your password fields are not equal'});
+          }else if(password.lenght < 6){
+            this.setState({errorMsg:'Password cannot be less than 6'});
+          }else{
+            this.setState({errorMsg:'', visibility: true});
+            fetch(SIGNUP_URL,{
+              method: 'POST',
+              headers: {
+                'Accept':'application/json',
+                'Content-Type':'application/json'
+              },
+              body: JSON.stringify({
+                name:fullName,
+                contact,
+                email,
+                password
+              })
+            })
+            .then(data => data.json())
+            .then(data => {
+              if(data == 'success'){
+                this.props.navigation.navigate('Login')
+              }
+            }).catch((e) => {
+              this.setState({visibility: false, networkVisibility: true})
+            })
+
+          }
+        }
+       // this.props.navigation.navigate("MainTabs")
+     }
+
+    _closeNetworkModal = () => {
+      this.setState({networkVisibility: false})
+    }
+
 
      handleSignInButton = () => {
        this.props.navigation.navigate("Login")
      }
 
-     handleSignUp = () => {
-       this.props.navigation.navigate("MainTabs")
-     }
-
     render() {
-      const { fullName, contact, email, password, confirmPassword } = this.state
+      const { fullName, contact, email, password, confirmPassword, networkVisibility, visibility } = this.state
       return (
         <ScrollView style={RegisterStyle.container}>
-          <Image source={require('../assets/menu1.jpg')} style={RegisterStyle.image} />
+          <StatusBar hidden />
+          <Image source={require('../assets/loginPic.jpg')} style={RegisterStyle.image} />
           <View style={RegisterStyle.loginView}>
             <Text style={RegisterStyle.loginText}>Sign Up</Text>
           </View>
@@ -56,7 +137,8 @@ class Register extends React.Component {
               </View>
             </View>
           </KeyboardAvoidingView>
-           <View style={{justifyContent: 'center', alignItems: 'center', marginVertical: 10,}}>
+           <View style={{justifyContent: 'center', alignItems: 'center', marginBottom: 10,marginTop: 0}}>
+              <Text style={{color: 'red',fontSize: 12}}>{this.state.errorMsg}</Text>
               <RaisedTextButton title={"Sign Up"} onPress={this.handleSignUp} style={{width: '50%', borderRadius: 20,}} color={"red"} titleColor={'#fff'} shadeColor={"#fff"}/>
             </View>
             <View style={{justifyContent: 'center', alignItems: 'center', flexDirection: 'row',marginVertical: 10,}}>
@@ -74,6 +156,30 @@ class Register extends React.Component {
                 <Icon name={Platform.OS == "android" ? 'logo-facebook' : 'logo-facebook'} color={'#e2c012'} size={20}/>
               </View>
             </View>
+            {/*For network connection*/}
+            <Modal isVisible={networkVisibility} animationIn="slideInUp" animationInTiming={700} animationOut="bounceOutDown" animationOutTiming={1000} onBackButtonPress={()=>this.setState({networkVisibility:!networkVisibility})}>
+              <View style={{ backgroundColor: '#fff', borderRadius: 10 }}>
+                <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                  <Icon name={Platform.OS == 'android' ? 'md-bug' : 'ios-bug'} size={30} color={"orange"} />
+                </View>
+                <View style={{height: 160, width: '100%',flexDirection: 'column', justifyContent: 'space-between',alignItems: 'center', marginVertical: 10}}>
+                  <Text style={{fontSize: 25}}>Ooops!!</Text>
+                  <View style={{paddingHorizontal: 10}}>
+                    <Text style={{textAlign: 'center'}}>Sorry, this device is not connected to the internet.Please connect and try again</Text>
+                  </View>
+                  <RaisedTextButton title={"OK"} onPress={this._closeNetworkModal} style={{width: '90%', borderRadius: 10,}} color={"red"} titleColor={'#fff'} shadeColor={"#fff"}/>
+                </View>
+              </View>
+            </Modal>
+
+          {/*For authentication*/}
+            <Modal isVisible={visibility} animationIn="slideInLeft" animationInTiming={1000} animationOut="bounceOutUp" animationOutTiming={1000}>
+              <View style={{ height: 150, width: '100%', backgroundColor: '#fff', borderRadius: 15, }}>
+                <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
+                  <ActivityIndicator size={50} color='red' />
+                </View>
+              </View>
+            </Modal>
         </ScrollView>
       )
     };

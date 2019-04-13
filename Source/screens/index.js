@@ -5,6 +5,7 @@ import Cart from './Cart'
 import Login from './Login'
 import Register from './Register'
 import SingleCategory from './singleCategory'
+import Loading from './Loading'
 
 export{
     Home,
@@ -13,5 +14,6 @@ export{
     Cart,
     Login,
     Register,
-   	SingleCategory
+   	SingleCategory,
+   	Loading
 }

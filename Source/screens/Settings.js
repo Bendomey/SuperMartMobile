@@ -4,6 +4,7 @@ import { Header, SettingsList } from 'components'
 import { ProfileStyle, HomeStyle } from 'styles'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { TextButton } from 'react-native-material-buttons'
+import AsyncStorage from '@react-native-community/async-storage'
 
 class Settings extends React.Component{
    constructor(props) {
@@ -12,6 +13,11 @@ class Settings extends React.Component{
           visibility: false,
           search: ''
         }
+    }
+
+    handleLogout = () => {
+      AsyncStorage.clear();
+      this.props.navigation.navigate('Login');
     }
 
     _handleOpenDrawer = () => {
@@ -58,7 +64,7 @@ class Settings extends React.Component{
                     <SettingsList title="Legal" />
                     <SettingsList title="How to use app" />
                 </View>
-                <TextButton title="Sign Out" titleColor="red"/>
+                <TextButton title="Sign Out" onPress={this.handleLogout} titleColor="red"/>
             </ScrollView>
         </View>
       )

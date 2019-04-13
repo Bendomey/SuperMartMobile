@@ -1,19 +1,101 @@
 import React from 'react'
-import { TouchableOpacity, View, Text, Button, ScrollView, Image, KeyboardAvoidingView, TextInput, Platform } from 'react-native'
+import { TouchableOpacity, View, Text, Button, ScrollView, Image, KeyboardAvoidingView, TextInput, Platform, StatusBar, ActivityIndicator } from 'react-native'
 import { LoginStyle } from 'styles'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { RaisedTextButton } from 'react-native-material-buttons'
+import Modal from 'react-native-modal'
+import NetInfo from "@react-native-community/netinfo"
+import { LOGIN_URL } from 'react-native-dotenv'
+import AsyncStorage from '@react-native-community/async-storage'
+
 class Login extends React.Component {
+    _isMounted = false;
+    _modalIsMounted = false;
     constructor(props) {
         super(props);
         this.state = {
           email: '',
           password: '',
+          visibility: false,
+          networkVisibility: false,
+          isConnected: false,
+          errorMsg: ''
         }
     }
 
+    componentDidMount(){
+      this._isMounted = true;
+      const listener = data => {
+        NetInfo.isConnected.fetch().then(isConnected => {
+          this.setState({isConnected})
+        })
+      }
+      if(this._isMounted){
+        const subscription = NetInfo.addEventListener('connectionChange',listener);     
+      }
+    }
+
+    componentWillUnmount(){
+      this._isMounted = false;
+      this._modalIsMounted =false;
+    } 
+
+    storeData = (key, value) => {
+      AsyncStorage.setItem(key,value)
+    }
+
     handleLogin = () => {
-      this.props.navigation.navigate("MainTabs")
+      const {email,password} = this.state
+      //check the network
+      const listener = data => {
+        NetInfo.isConnected.fetch().then(isConnected => {
+          this.setState({isConnected})
+        })
+      }
+      const subscription = NetInfo.addEventListener('connectionChange',listener);     
+      if(this.state.isConnected == false){
+        this.setState({networkVisibility: true});
+      }else
+      if(email == ''){
+        this.setState({errorMsg: 'Email field is empty'})
+      }else if(this.state.password == ''){
+        this.setState({errorMsg: 'Password field is empty'})
+      }else{
+        this.setState({errorMsg:'',visibility: true})   
+        this._modalIsMounted = true;
+        //checking credentials from server
+
+        fetch(LOGIN_URL, {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            email,
+            password
+          })
+        })
+        .then(data => data.json())
+        .then((data) => {
+            if(data[0] == null){
+              console.log("wrong");
+              this.setState({visibility: false, errorMsg:'Your credentials are incorrect'})              
+            }else{
+              this.storeData('user',JSON.stringify(data))
+              this.props.navigation.navigate("MainTabs")
+            }
+        })
+        .catch(function (error) {
+          console.log(error);
+          this.setState({visibility: false, networkVisibility: true})
+        });
+
+      }
+    }
+
+     _closeNetworkModal = () => {
+      this.setState({networkVisibility: false})
     }
 
     handleSignUpButton = () => {
@@ -25,19 +107,21 @@ class Login extends React.Component {
     }
 
     render() {
-      const { email, password } = this.state
+      const { email, password, visibility, networkVisibility } = this.state
       return (
         <ScrollView style={LoginStyle.container}>
-          <Image source={require('../assets/menu1.jpg')} style={LoginStyle.image} />
+          <StatusBar hidden />
+          <Image source={require('../assets/loginPic.jpg')} style={LoginStyle.image} />
             <View style={LoginStyle.loginView}>
               <Text style={LoginStyle.loginText}>Login to your account</Text>
             </View>
             <KeyboardAvoidingView>
               <View style={LoginStyle.textInputView}>
-                <View style={{flexDirection: 'row', marginBottom: 8,justifyContent: 'center', alignItems: 'center',}}>
+                <View style={{flexDirection: 'row',justifyContent: 'center', alignItems: 'center',}}>
                   <Icon name={Platform.OS == 'android' ? 'md-contact' : 'ios-contact'} color={"black"} size={Platform.OS == "android" ? 20 : 1} style={{position: 'relative', left: 25}} />
                   <TextInput style={LoginStyle.textViewNode} placeholderTextColor={"black"} value={email} onChangeText={(value) => this.setState({email: value})} placeholder={"Email"} keyboardType={'email-address'} underlineColorAndroid={'#bfbfbf'} />
                 </View>
+                <Text style={{color: 'red',fontSize: 12}}>{this.state.errorMsg}</Text>
                 <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center',}}>
                   <Icon name={Platform.OS == "android" ? 'md-key' : 'ios-key'} color={"black"} size={Platform.OS == "android" ? 20 : 1} style={{position: 'relative', left: 25}} />
                   <TextInput style={LoginStyle.textViewNode} placeholderTextColor={"black"} value={password} onChangeText={(value) => {this.setState({password:value})}} placeholder={"Password"} secureTextEntry={true} underlineColorAndroid={'#bfbfbf'} />
@@ -67,6 +151,31 @@ class Login extends React.Component {
             <TouchableOpacity onPress={this._skipNow} style={{width: '95%',display: 'flex', flexDirection: 'row', justifyContent: 'flex-end'}}>
               <Text style={{color: '#e2c012'}}>Skip Now <Icon name={Platform.OS == 'android' ? 'md-arrow-round-forward' : 'ios-arrow-round-forward'} size={15} color={'#e2c012'} /></Text>
             </TouchableOpacity>
+
+          {/*For network connection*/}
+            <Modal isVisible={networkVisibility} animationIn="slideInUp" animationInTiming={700} animationOut="bounceOutDown" animationOutTiming={1000} onBackButtonPress={()=>this.setState({networkVisibility:!networkVisibility})}>
+              <View style={{ backgroundColor: '#fff', borderRadius: 10 }}>
+                <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                  <Icon name={Platform.OS == 'android' ? 'md-bug' : 'ios-bug'} size={30} color={"orange"} />
+                </View>
+                <View style={{height: 160, width: '100%',flexDirection: 'column', justifyContent: 'space-between',alignItems: 'center', marginVertical: 10}}>
+                  <Text style={{fontSize: 25}}>Ooops!!</Text>
+                  <View style={{paddingHorizontal: 10}}>
+                    <Text style={{textAlign: 'center'}}>Sorry, this device is not connected to the internet.Please connect and try again</Text>
+                  </View>
+                  <RaisedTextButton title={"OK"} onPress={this._closeNetworkModal} style={{width: '90%', borderRadius: 10,}} color={"red"} titleColor={'#fff'} shadeColor={"#fff"}/>
+                </View>
+              </View>
+            </Modal>
+
+          {/*For authentication*/}
+            <Modal isVisible={visibility} animationIn="slideInLeft" animationInTiming={1000} animationOut="bounceOutUp" animationOutTiming={1000}>
+              <View style={{ height: 150, width: '100%', backgroundColor: '#fff', borderRadius: 15, }}>
+                <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
+                  <ActivityIndicator size={50} color='red' />
+                </View>
+              </View>
+            </Modal>
         </ScrollView>
       )
     }
