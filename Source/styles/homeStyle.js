@@ -5,6 +5,14 @@ const HomeStyle = StyleSheet.create({
         flex: 1,
         backgroundColor: '#f5f6f6'
     },
+    cardView: {
+        marginTop: 20
+    },
+    categoryView: {
+        marginRight: 15,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+    },
     modalHeader: {
         height: 60,
         display: 'flex',

@@ -3,13 +3,15 @@ import {
     createStackNavigator
 } from 'react-navigation'
 import {
-    Home
+    Home,
+    SingleCategory
 } from 'screens'
 
 
 
 const AppDrawer = createStackNavigator({
-    Home
+    Home,
+    SingleCategory
 },{
     initialRouteName: 'Home',
     headerMode: 'none'

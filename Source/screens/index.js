@@ -4,6 +4,7 @@ import Settings from './Settings'
 import Cart from './Cart'
 import Login from './Login'
 import Register from './Register'
+import SingleCategory from './singleCategory'
 
 export{
     Home,
@@ -11,5 +12,6 @@ export{
     Settings,
     Cart,
     Login,
-    Register
+    Register,
+   	SingleCategory
 }
