@@ -7,6 +7,7 @@ import Modal from 'react-native-modal'
 import NetInfo from "@react-native-community/netinfo"
 import { LOGIN_URL } from 'react-native-dotenv'
 import AsyncStorage from '@react-native-community/async-storage'
+import { storeData } from 'Library'
 
 class Login extends React.Component {
     _isMounted = false;
@@ -40,9 +41,9 @@ class Login extends React.Component {
       this._modalIsMounted =false;
     } 
 
-    storeData = (key, value) => {
-      AsyncStorage.setItem(key,value)
-    }
+    // storeData = (key, value) => {
+    //   AsyncStorage.setItem(key,value)
+    // }
 
     handleLogin = () => {
       const {email,password} = this.state
@@ -82,13 +83,13 @@ class Login extends React.Component {
               console.log("wrong");
               this.setState({visibility: false, errorMsg:'Your credentials are incorrect'})              
             }else{
-              this.storeData('user',JSON.stringify(data))
+              storeData('user',JSON.stringify(data))
               this.props.navigation.navigate("MainTabs")
             }
         })
         .catch(function (error) {
           console.log(error);
-          this.setState({visibility: false, networkVisibility: true})
+          this.setState({visibility: false, errorMsg: 'Something went wrong, try again'})
         });
 
       }

@@ -83,8 +83,11 @@ class Register extends React.Component {
             })
             .then(data => data.json())
             .then(data => {
-              if(data == 'success'){
+              if(data[0] != null){
+                //move to verification page later
                 this.props.navigation.navigate('Login')
+              }else{
+                this.setState({visibility: false, errorMsg: 'Email is already taken'});
               }
             }).catch((e) => {
               this.setState({visibility: false, networkVisibility: true})
