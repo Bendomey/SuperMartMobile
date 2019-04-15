@@ -12,7 +12,7 @@ class Home extends React.Component {
           search: ''
         }
     }
-
+    
     _handleOpenDrawer = () => {
       alert('open drawer')
     }
