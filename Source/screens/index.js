@@ -8,6 +8,8 @@ import SingleCategory from './singleCategory'
 import Loading from './Loading'
 import VerifyNewAccount from './VerifyNewAccount'
 import ForgotPassword from './ForgotPassword'
+import VerifyPhone from './VerifyPhone'
+import ResetPassword from './ResetPassword'
 
 export{
     Home,
@@ -19,5 +21,7 @@ export{
    	SingleCategory,
    	Loading,
    	VerifyNewAccount,
-   	ForgotPassword
+   	ForgotPassword,
+    VerifyPhone,
+    ResetPassword
 }

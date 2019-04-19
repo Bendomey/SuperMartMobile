@@ -4,7 +4,9 @@ import {
 } from 'react-navigation'
 import {
     Login,
-    ForgotPassword
+    ForgotPassword,
+    VerifyPhone,
+    ResetPassword
 } from 'screens'
 
 
@@ -21,6 +23,18 @@ const LoginStack = createStackNavigator({
     	navigationOptions:{
     		headerTransparent:true,
     	}
+    },
+    VerifyPhone:{
+        screen:VerifyPhone,
+        navigationOptions:{
+            header:null
+        }
+    },
+    ResetPassword:{
+        screen:ResetPassword,
+        navigationOptions:{
+            header:null
+        }
     }
 },{
     initialRouteName: 'Login',

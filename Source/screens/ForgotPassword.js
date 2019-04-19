@@ -67,8 +67,9 @@ export default class ForgotPassword extends React.Component{
         .then((data) => data.json())
         .then(data => {
           if(data){
-            this.props.navigation.navigate('verifyAccount',{
-              userId:data.id
+            this.props.navigation.navigate('verifyPhone',{
+              userId:data.id,
+              userContact:data.contact
             })
           }else{
             this.setState({visibility:false,errorMsg:'This email does not exists in our records'})

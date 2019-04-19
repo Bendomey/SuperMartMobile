@@ -4,17 +4,17 @@ import CodeInput from 'react-native-confirmation-code-input'
 import Icon from 'react-native-vector-icons/Ionicons'
 import Modal from 'react-native-modal'
 import NetInfo from "@react-native-community/netinfo"
-import { VERIFY_ACC, RESEND_VALIDATION_CODE } from 'react-native-dotenv'
-import AsyncStorage from '@react-native-community/async-storage'
+import { VALIDATE_PHONE, RESEND_VERIFICATION_CODE } from 'react-native-dotenv'
 
-export default class VerifyNewAccount extends React.Component{
+export default class VerifyPhone extends React.Component{
 	subscription = null;
 
 	constructor(props) {
 	  super(props);
 	
 	  this.state = {
-	  	id:navigation.getParam('userID'),
+	  	id:navigation.getParam('userId'),
+	  	contact:navigation.getParam('userContact'),
 	  	visibility:false,
 	  	networkVisibility:false,
 	  	isConnected:false,
@@ -53,7 +53,7 @@ export default class VerifyNewAccount extends React.Component{
 		
 		if(isConnected){
 			this.setState({visibility:true})
-			fetch(VERIFY_ACC,{
+			fetch(VALIDATE_PHONE,{
 				method:'POST',
 				headers:{
 					'Accept':'application/json',
@@ -69,8 +69,9 @@ export default class VerifyNewAccount extends React.Component{
 				if(data == false){
 					this.setState({visibility:false, errorMsg:'Verification Code is wrong,try again'})
 				}else{
-		            this.storeData('user',JSON.stringify(data))
-					this.props.navigation.navigate('MainTabs')					
+					this.props.navigation.navigate('resetPassword',{
+						userIdentity:data.id
+					})					
 				}
 			})
 			.catch((err) => {
@@ -91,7 +92,7 @@ export default class VerifyNewAccount extends React.Component{
       	subscription = NetInfo.addEventListener('connectionChange',listener);  
 		if(isConnected){
 			this.setState({visibility:true})
-			fetch(RESEND_VALIDATION_CODE,{
+			fetch(RESEND_VERIFICATION_CODE,{
 				method:'POST',
 				headers:{
 					'Accept':'application/json',
@@ -106,7 +107,7 @@ export default class VerifyNewAccount extends React.Component{
 				if(data){
 					this.setState({visibility:false});
 				}else{
-					this.setState({visibility:false,errorMsg:'Internal Error Occured'})
+					this.setState({visibility:false,errorMsg:'Internal error occured, try again later'})
 				}
 			})
 		}else{
@@ -123,11 +124,15 @@ export default class VerifyNewAccount extends React.Component{
     }
 
 	render() {
+		let contact = toString(this.state.contact);
+		let firstContact = contact.substr(0,3)
+		let lastContact = contact.substr(6)
+		let newContact = `${firstContact} xxx xxx${lastContact}`
 		return (
 			<View style={styles.container}>
 				<Icon name="md-checkbox-outline" size={50} style={{marginTop:10}} color="red" />
 				<Text style={styles.topic}>Verify Your Phone Number</Text>
-				<Text style={{textAlign: 'center', fontFamily: 'calibri', marginHorizontal:10, marginBottom:2}}>Please enter the code you have received by SMS in order to verify your account</Text>
+				<Text style={{textAlign: 'center', fontFamily: 'calibri', marginHorizontal:10, marginBottom:2}}>Enter the verification code sent to this number {newContact}</Text>
                 <Text style={{color: 'red',fontSize: 12}}>{this.state.errorMsg}</Text>
 				<TouchableOpacity onPress={this.handleRetryCode}>
 					<Text style={{color:"blue"}}>Please send another code</Text>
