@@ -4,20 +4,88 @@ import { RaisedTextButton } from 'react-native-material-buttons'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { LoginStyle } from 'styles'
 import Modal from 'react-native-modal'
+import { FORGOT_PASSWORD_CODE } from 'react-native-dotenv'
 
 export default class ForgotPassword extends React.Component{
+  subscription = null
 	constructor(props) {
 	  super(props);
 	
 	  this.state = {
 	  	email: '',
 	  	visibility:false,
-	  	networkVisibility:false
+	  	networkVisibility:false,
+      isConnected:false,
+      errorMsg:''
 	  };
 	}
 
+  componentDidMount(){
+    const listener = data => {
+      NetInfo.isConnected.fetch().then(isConnected => {
+        this.setState({isConnected})
+      })
+    }
+        
+    this.subscription = NetInfo.addEventListener('connectionChange',listener);     
+  }
+
+  componentWillUnMount(){
+    this.subscription = NetInfo.removeEventListener('connectionChange')
+  }
+
+  /**
+  * Check if youre connected to the internet
+  * Send your email for reset code
+  * Redirect them to verify code screen for verification
+  */
+
+  handleSubmit = () => {
+    const { email, visibility, networkVisibility, isConnected, errorMsg } = this.state
+    const listener = data => {
+      NetInfo.isConnected.fetch().then(isConnected => {
+        this.setState({isConnected})
+      })
+    }
+        
+    this.subscription = NetInfo.addEventListener('connectionChange',listener);
+    if(isConnected){
+      if(email == ''){
+        this.setState({errorMsg:'Email field is empty'})
+      }else{
+        this.setState({visibility: true})
+        fetch(FORGOT_PASSWORD_CODE,{
+          method:'POST',
+          headers:{
+            'Accept':'application/json',
+            'Content-Type':'application/json'
+          },
+          body: JSON.stringify({
+            email
+          })
+        })
+        .then((data) => data.json())
+        .then(data => {
+          if(data){
+            this.props.navigation.navigate('verifyAccount',{
+              userId:data.id
+            })
+          }else{
+            this.setState({visibility:false,errorMsg:'This email does not exists in our records'})
+          }
+        })
+      }
+    }else{
+      this.setState({networkVisibility:true})
+    }
+  }
+
+  _closeNetworkModal = () => {
+      this.setState({networkVisibility: false})
+    }
+
 	render() {
-      	const { email, visibility, networkVisibility } = this.state
+      	const { email, visibility, networkVisibility, isConnected } = this.state
 		return (
 		<ScrollView style={LoginStyle.container}>
           <StatusBar hidden />
@@ -37,8 +105,10 @@ export default class ForgotPassword extends React.Component{
              </View>
             </KeyboardAvoidingView>
             <View style={{justifyContent: 'center', alignItems: 'center', marginVertical: 10,}}>
-              <RaisedTextButton title={"Sign In"} onPress={this.handleLogin} style={{width: '80%', borderRadius: 5,}} color={"red"} titleColor={'#fff'} shadeColor={"#fff"}/>
+              <RaisedTextButton title={"Sign In"} onPress={this.handleSubmit} style={{width: '80%', borderRadius: 5,}} color={"red"} titleColor={'#fff'} shadeColor={"#fff"}/>
             </View>
+            <Text style={{color: 'red',fontSize: 12}}>{this.state.errorMsg}</Text>
+
           {/*For network connection*/}
             <Modal isVisible={networkVisibility} animationIn="slideInUp" animationInTiming={700} animationOut="bounceOutDown" animationOutTiming={1000} onBackButtonPress={()=>this.setState({networkVisibility:!networkVisibility})}>
               <View style={{ backgroundColor: '#fff', borderRadius: 10 }}>
