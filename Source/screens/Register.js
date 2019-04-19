@@ -12,20 +12,22 @@ import AsyncStorage from '@react-native-community/async-storage'
 
 
 class Register extends React.Component {
-     constructor(props) {
-       super(props);
-       this.state = {
-         fullName: '',
-         contact: '',
-         email: '',
-         password: '',
-         confirmPassword: '',
-         visibility: false,
-         networkVisibility: false,
-         isConnected: false,
-         errorMsg: ''
-       }
-     }
+  _isMounted = false;
+  _modalIsMounted = false;
+ constructor(props) {
+   super(props);
+   this.state = {
+     fullName: '',
+     contact: '',
+     email: '',
+     password: '',
+     confirmPassword: '',
+     visibility: false,
+     networkVisibility: false,
+     isConnected: false,
+     errorMsg: ''
+   }
+ }
 
 
     componentDidMount(){
@@ -83,9 +85,11 @@ class Register extends React.Component {
             })
             .then(data => data.json())
             .then(data => {
-              if(data[0] != null){
-                //move to verification page later
-                this.props.navigation.navigate('Login')
+              if(data != null){
+                //move to verification page later and also pass the data there
+                this.props.navigation.navigate('VerifyNewAccount',{
+                  userID:data.id
+                })
               }else{
                 this.setState({visibility: false, errorMsg: 'Email is already taken'});
               }
