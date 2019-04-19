@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import { LoginStyle } from 'styles'
 import Modal from 'react-native-modal'
 import { FORGOT_PASSWORD_CODE } from 'react-native-dotenv'
+import NetInfo from "@react-native-community/netinfo"
 
 export default class ForgotPassword extends React.Component{
   subscription = null
@@ -66,10 +67,11 @@ export default class ForgotPassword extends React.Component{
         })
         .then((data) => data.json())
         .then(data => {
-          if(data){
-            this.props.navigation.navigate('verifyPhone',{
+          if(data != null){
+            this.setState({visibility:false})
+            this.props.navigation.navigate('VerifyPhone',{
               userId:data.id,
-              userContact:data.contact
+              userContact:data.customer_contact
             })
           }else{
             this.setState({visibility:false,errorMsg:'This email does not exists in our records'})
@@ -88,7 +90,7 @@ export default class ForgotPassword extends React.Component{
 	render() {
       	const { email, visibility, networkVisibility, isConnected } = this.state
 		return (
-		<ScrollView style={LoginStyle.container}>
+		    <ScrollView style={LoginStyle.container}>
           <StatusBar hidden />
           <Image source={require('../assets/loginPic.jpg')} style={LoginStyle.image} />
             <View style={LoginStyle.loginView}>
@@ -105,10 +107,12 @@ export default class ForgotPassword extends React.Component{
                 </View>
              </View>
             </KeyboardAvoidingView>
+            <View style={{justifyContent:'center',alignItems:'center'}}>
+              <Text style={{color: 'red',fontSize: 12}}>{this.state.errorMsg}</Text>
+            </View>
             <View style={{justifyContent: 'center', alignItems: 'center', marginVertical: 10,}}>
               <RaisedTextButton title={"Sign In"} onPress={this.handleSubmit} style={{width: '80%', borderRadius: 5,}} color={"red"} titleColor={'#fff'} shadeColor={"#fff"}/>
             </View>
-            <Text style={{color: 'red',fontSize: 12}}>{this.state.errorMsg}</Text>
 
           {/*For network connection*/}
             <Modal isVisible={networkVisibility} animationIn="slideInUp" animationInTiming={700} animationOut="bounceOutDown" animationOutTiming={1000} onBackButtonPress={()=>this.setState({networkVisibility:!networkVisibility})}>

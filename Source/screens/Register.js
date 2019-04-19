@@ -66,7 +66,7 @@ class Register extends React.Component {
             this.setState({errorMsg: 'Confirm password field is empty'});
           }else if(password != confirmPassword){
             this.setState({errorMsg:'Your password fields are not equal'});
-          }else if(password.lenght < 6){
+          }else if(password.length < 6){
             this.setState({errorMsg:'Password cannot be less than 6'});
           }else{
             this.setState({errorMsg:'', visibility: true});
@@ -85,8 +85,9 @@ class Register extends React.Component {
             })
             .then(data => data.json())
             .then(data => {
-              if(data != null){
+              if(data){
                 //move to verification page later and also pass the data there
+                this.setState({visibility:false})
                 this.props.navigation.navigate('VerifyNewAccount',{
                   userID:data.id
                 })

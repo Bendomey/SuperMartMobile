@@ -1,10 +1,11 @@
 import React from 'react'
-import { View,Text,StyleSheet,TouchableOpacity,ActivityIndicator } from 'react-native'
+import { View,Text,StyleSheet,TouchableOpacity,ActivityIndicator,Platform } from 'react-native'
 import CodeInput from 'react-native-confirmation-code-input'
 import Icon from 'react-native-vector-icons/Ionicons'
 import Modal from 'react-native-modal'
 import NetInfo from "@react-native-community/netinfo"
 import { VALIDATE_PHONE, RESEND_VERIFICATION_CODE } from 'react-native-dotenv'
+import { RaisedTextButton } from 'react-native-material-buttons'
 
 export default class VerifyPhone extends React.Component{
 	subscription = null;
@@ -13,8 +14,8 @@ export default class VerifyPhone extends React.Component{
 	  super(props);
 	
 	  this.state = {
-	  	id:navigation.getParam('userId'),
-	  	contact:navigation.getParam('userContact'),
+	  	id:null,
+	  	contact:null,
 	  	visibility:false,
 	  	networkVisibility:false,
 	  	isConnected:false,
@@ -29,7 +30,14 @@ export default class VerifyPhone extends React.Component{
 	        })
       	}
         
-        this.subscription = NetInfo.addEventListener('connectionChange',listener);     
+        this.subscription = NetInfo.addEventListener('connectionChange',listener);
+    }
+
+	componentWillMount(){
+		this.setState({
+        	id:this.props.navigation.getParam('userId','0'),
+        	contact:this.props.navigation.getParam('userContact','001122')
+        })
 	}
 
 	componentWillUnMount(){
@@ -68,10 +76,11 @@ export default class VerifyPhone extends React.Component{
 			.then(data => {
 				if(data == false){
 					this.setState({visibility:false, errorMsg:'Verification Code is wrong,try again'})
-				}else{
-					this.props.navigation.navigate('resetPassword',{
+				}else if(data){
+					this.setState({visibility:false})
+					this.props.navigation.navigate('ResetPassword',{
 						userIdentity:data.id
-					})					
+					})
 				}
 			})
 			.catch((err) => {
@@ -81,6 +90,8 @@ export default class VerifyPhone extends React.Component{
 			this.setState({networkVisibility:true})
 		}
 	}
+
+
 
 	handleRetryCode = () => {
 		const { isConnected,id } = this.state
@@ -124,15 +135,15 @@ export default class VerifyPhone extends React.Component{
     }
 
 	render() {
-		let contact = toString(this.state.contact);
-		let firstContact = contact.substr(0,3)
-		let lastContact = contact.substr(6)
+		let contact = this.state.contact;
+		let firstContact = contact.substring(0,3)
+		let lastContact = contact.substring(9)
 		let newContact = `${firstContact} xxx xxx${lastContact}`
 		return (
 			<View style={styles.container}>
 				<Icon name="md-checkbox-outline" size={50} style={{marginTop:10}} color="red" />
 				<Text style={styles.topic}>Verify Your Phone Number</Text>
-				<Text style={{textAlign: 'center', fontFamily: 'calibri', marginHorizontal:10, marginBottom:2}}>Enter the verification code sent to this number {newContact}</Text>
+				<Text style={{textAlign: 'center', fontFamily: 'calibri', marginHorizontal:30, marginBottom:2}}>Enter the verification code sent to this number {newContact}</Text>
                 <Text style={{color: 'red',fontSize: 12}}>{this.state.errorMsg}</Text>
 				<TouchableOpacity onPress={this.handleRetryCode}>
 					<Text style={{color:"blue"}}>Please send another code</Text>
@@ -143,15 +154,14 @@ export default class VerifyPhone extends React.Component{
 					size={50}
 					inputPosition="center"
 					onFulfill={(code) => this._onFullfill(code)}
-					autofocus={false}
 					ignoreCase={false}
 					activeColor="red"
 					inactiveColor="gray"
-					KeyboardType="numeric"
+					keyboardType="numeric"
 				/>
 
 				{/*For network connection*/}
-	            <Modal isVisible={networkVisibility} animationIn="slideInUp" animationInTiming={700} animationOut="bounceOutDown" animationOutTiming={1000} onBackButtonPress={()=>this.setState({networkVisibility:!networkVisibility})}>
+	            <Modal isVisible={this.state.networkVisibility} animationIn="slideInUp" animationInTiming={700} animationOut="bounceOutDown" animationOutTiming={1000} onBackButtonPress={()=>this.setState({networkVisibility:!networkVisibility})}>
 	              <View style={{ backgroundColor: '#fff', borderRadius: 10 }}>
 	                <View style={{justifyContent: 'center', alignItems: 'center'}}>
 	                  <Icon name={Platform.OS == 'android' ? 'md-bug' : 'ios-bug'} size={30} color={"orange"} />
@@ -191,7 +201,7 @@ const styles = StyleSheet.create({
 		fontFamily: 'arial',
 		fontWeight: 'bold',
 		color: '#000',
-		marginBottom: 50,
+		marginBottom: 40,
 		textAlign: 'left',
 		marginHorizontal:50 
 	}

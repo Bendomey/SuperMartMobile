@@ -79,7 +79,7 @@ class Login extends React.Component {
         })
         .then(data => data.json())
         .then((data) => {
-            if(data == null){
+            if(data.id == null){
               this.setState({visibility: false, errorMsg:'Your credentials are incorrect'})              
             }else{
               this.storeData('user',JSON.stringify(data))

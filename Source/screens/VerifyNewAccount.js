@@ -1,11 +1,12 @@
 import React from 'react'
-import { View,Text,StyleSheet,TouchableOpacity,ActivityIndicator } from 'react-native'
+import { View,Text,StyleSheet,TouchableOpacity,ActivityIndicator,Platform } from 'react-native'
 import CodeInput from 'react-native-confirmation-code-input'
 import Icon from 'react-native-vector-icons/Ionicons'
 import Modal from 'react-native-modal'
 import NetInfo from "@react-native-community/netinfo"
 import { VERIFY_ACC, RESEND_VALIDATION_CODE } from 'react-native-dotenv'
 import AsyncStorage from '@react-native-community/async-storage'
+import { RaisedTextButton } from 'react-native-material-buttons'
 
 export default class VerifyNewAccount extends React.Component{
 	subscription = null;
@@ -14,12 +15,18 @@ export default class VerifyNewAccount extends React.Component{
 	  super(props);
 	
 	  this.state = {
-	  	id:navigation.getParam('userID'),
+	  	id:null,
 	  	visibility:false,
 	  	networkVisibility:false,
 	  	isConnected:false,
 	  	errorMsg:''
 	  };
+	}
+
+	componentWillMount(){
+		this.setState({
+        	id:this.props.navigation.getParam('userID','0'),
+        })
 	}
 
 	componentDidMount(){
@@ -35,6 +42,10 @@ export default class VerifyNewAccount extends React.Component{
 	componentWillUnMount(){
 		this.subscription = NetInfo.removeEventListener('connectionChange')
 	}
+
+	storeData = (key, value) => {
+      AsyncStorage.setItem(key,value)
+    }
 
 	/**
 	* Check if youre connected to the internet
@@ -61,7 +72,7 @@ export default class VerifyNewAccount extends React.Component{
 				},
 				body:JSON.stringify({
 					id,
-					validation_code:code
+					verification_code:code
 				})
 			})
 			.then((data) => data.json())
@@ -118,10 +129,6 @@ export default class VerifyNewAccount extends React.Component{
       this.setState({networkVisibility: false})
     }
 
-    storeData = (key, value) => {
-      AsyncStorage.setItem(key,value)
-    }
-
 	render() {
 		return (
 			<View style={styles.container}>
@@ -138,15 +145,15 @@ export default class VerifyNewAccount extends React.Component{
 					size={50}
 					inputPosition="center"
 					onFulfill={(code) => this._onFullfill(code)}
-					autofocus={false}
+					autofocus={true}
 					ignoreCase={false}
 					activeColor="red"
 					inactiveColor="gray"
-					KeyboardType="numeric"
+					keyboardType="numeric"
 				/>
 
 				{/*For network connection*/}
-	            <Modal isVisible={networkVisibility} animationIn="slideInUp" animationInTiming={700} animationOut="bounceOutDown" animationOutTiming={1000} onBackButtonPress={()=>this.setState({networkVisibility:!networkVisibility})}>
+	            <Modal isVisible={this.state.networkVisibility} animationIn="slideInUp" animationInTiming={700} animationOut="bounceOutDown" animationOutTiming={1000} onBackButtonPress={()=>this.setState({networkVisibility:!networkVisibility})}>
 	              <View style={{ backgroundColor: '#fff', borderRadius: 10 }}>
 	                <View style={{justifyContent: 'center', alignItems: 'center'}}>
 	                  <Icon name={Platform.OS == 'android' ? 'md-bug' : 'ios-bug'} size={30} color={"orange"} />

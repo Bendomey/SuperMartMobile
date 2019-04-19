@@ -3,6 +3,7 @@ import { View, Text, Modal, Platform, TextInput, TouchableOpacity, StatusBar, Sc
 import { Header, CardForProduct, CardForCategory } from 'components'
 import { HomeStyle } from 'styles'
 import Icon from 'react-native-vector-icons/Ionicons'
+import AsyncStorage from '@react-native-community/async-storage'
 
 class Home extends React.Component {
     constructor(props) {
@@ -11,6 +12,11 @@ class Home extends React.Component {
           visibility: false,
           search: ''
         }
+    }
+
+    async componentDidMount(){
+      let data = await AsyncStorage.getItem('user')
+      console.log(data);
     }
     
     _handleOpenDrawer = () => {
