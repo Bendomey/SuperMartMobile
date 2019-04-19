@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import Modal from 'react-native-modal'
 import NetInfo from "@react-native-community/netinfo"
 import { VERIFY_ACC } from 'react-native-dotenv'
+import AsyncStorage from '@react-native-community/async-storage'
 
 export default class VerifyNewAccount extends React.Component{
 	subscription = null;
@@ -68,11 +69,12 @@ export default class VerifyNewAccount extends React.Component{
 				if(data == false){
 					this.setState({visibility:false, errorMsg:'Verification Code is wrong,try again'})
 				}else{
+		            this.storeData('user',JSON.stringify(data))
 					this.props.navigation.navigate('MainTabs')					
 				}
 			})
 			.catch((err) => {
-				this.setState({visibility:false, networkVisibility:true})
+				this.setState({visibility:false, errorMsg: 'Something went wrong, try again'})
 			})
 		}else{
 			this.setState({networkVisibility:true})
@@ -81,6 +83,10 @@ export default class VerifyNewAccount extends React.Component{
 
 	_closeNetworkModal = () => {
       this.setState({networkVisibility: false})
+    }
+
+    storeData = (key, value) => {
+      AsyncStorage.setItem(key,value)
     }
 
 	render() {
