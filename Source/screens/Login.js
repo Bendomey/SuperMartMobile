@@ -98,7 +98,11 @@ class Login extends React.Component {
     }
 
     handleSignUpButton = () => {
-      this.props.navigation.navigate("Register")
+      this.props.navigation.navigate("RegisterStack")
+    }
+
+    handleForgotPassword = () => {
+      this.props.navigation.navigate("ForgotPassword")
     }
 
     _skipNow = () => {
@@ -131,9 +135,8 @@ class Login extends React.Component {
               <RaisedTextButton title={"Sign In"} onPress={this.handleLogin} style={{width: '50%', borderRadius: 20,}} color={"red"} titleColor={'#fff'} shadeColor={"#fff"}/>
             </View>
             <View style={{justifyContent: 'center', alignItems: 'center', flexDirection: 'row',marginVertical: 10,}}>
-              <Text>Not a member? </Text>
-              <TouchableOpacity onPress={this.handleSignUpButton}><Text style={{color: 'red'}}>Sign Up</Text></TouchableOpacity>
-            </View>
+              <TouchableOpacity onPress={this.handleForgotPassword}><Text style={{color: 'red'}}>Forgot your password?</Text></TouchableOpacity>
+            </View>          
             <View style={{justifyContent: 'center',alignItems: 'center', flexDirection: 'row',marginVertical: 10,}}>
               <View style={{backgroundColor: '#fff',marginRight:8, borderColor: '#e2c012', borderRadius: 20, borderWidth: 1, padding: 7}}>
                 <Icon name={Platform.OS == "android" ? 'logo-twitter' : 'logo-twitter'} color={'#e2c012'} size={20}/>
@@ -147,9 +150,11 @@ class Login extends React.Component {
 
               </View>
             </View>
-            <TouchableOpacity onPress={this._skipNow} style={{width: '95%',display: 'flex', flexDirection: 'row', justifyContent: 'flex-end'}}>
-              <Text style={{color: '#e2c012'}}>Skip Now <Icon name={Platform.OS == 'android' ? 'md-arrow-round-forward' : 'ios-arrow-round-forward'} size={15} color={'#e2c012'} /></Text>
-            </TouchableOpacity>
+            <View style={{justifyContent: 'center', alignItems: 'center', flexDirection: 'row',marginVertical: 10,}}>
+              <Text>Not a member? </Text>
+              <TouchableOpacity onPress={this.handleSignUpButton}><Text style={{color: 'red'}}>Sign Up</Text></TouchableOpacity>
+            </View>
+            
 
           {/*For network connection*/}
             <Modal isVisible={networkVisibility} animationIn="slideInUp" animationInTiming={700} animationOut="bounceOutDown" animationOutTiming={1000} onBackButtonPress={()=>this.setState({networkVisibility:!networkVisibility})}>

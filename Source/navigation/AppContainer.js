@@ -1,12 +1,14 @@
 import { createAppContainer, createSwitchNavigator } from 'react-navigation'
 import MainTabs from './MainTab'
 import Drawer from './Drawer'
-import {Login, Register, Loading } from 'screens'
+import RegisterStack from './RegisterStack'
+import LoginStack from './LoginStack'
+import {Loading } from 'screens'
 
 const container = createSwitchNavigator({
 	Loading,
-    Login,
-    Register,
+    LoginStack,
+    RegisterStack,
     MainTabs
 },{
 	initialRouteName: 'Loading'

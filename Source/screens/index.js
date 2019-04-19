@@ -6,6 +6,8 @@ import Login from './Login'
 import Register from './Register'
 import SingleCategory from './singleCategory'
 import Loading from './Loading'
+import VerifyNewAccount from './VerifyNewAccount'
+import ForgotPassword from './ForgotPassword'
 
 export{
     Home,
@@ -15,5 +17,7 @@ export{
     Login,
     Register,
    	SingleCategory,
-   	Loading
+   	Loading,
+   	VerifyNewAccount,
+   	ForgotPassword
 }

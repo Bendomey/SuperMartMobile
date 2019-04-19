@@ -12,6 +12,7 @@
     "axios": "^0.18.0",
     "react": "16.8.3",
     "react-native": "0.59.1",
+    "react-native-confirmation-code-input": "^1.0.4",
     "react-native-dotenv": "^0.2.0",
     "react-native-gesture-handler": "^1.1.0",
     "react-native-material-buttons": "^0.5.0",
