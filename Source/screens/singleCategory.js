@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, TextInput, Modal, Platform, TouchableOpacity, StatusBar, ScrollView } from 'react-native'
-import { Header, CardForProduct, CardForCategory } from 'components'
+import { Header, CardForSingleProduct, cardForSingleProduct } from 'components'
 import { HomeStyle } from 'styles'
 import Icon from 'react-native-vector-icons/Ionicons'
 
@@ -37,11 +37,7 @@ class Category extends React.Component{
 		        <Header _openDrawer={this._handleOpenDrawer} openSearchStack={this._handleOpenSearchStack} openNotification={this._handleOpenNotificationModal} / >
 				<ScrollView >
 				<View style={HomeStyle.cardView}>
-					<ScrollView horizontal showsHorizontalScrollIndicator={false} style={{marginLeft: 15, marginBottom: 10}} >
-						<CardForProduct />
-						<CardForProduct />
-						<CardForProduct />
-					</ScrollView>
+					
 					<View style={{justifyContent:'space-between', marginHorizontal: 10, flexDirection: 'row', alignItems: 'center'}}>
 						<Text style={{marginLeft: 15, color: '#000', fontSize:20, marginBottom: 15, fontWeight: 'bold'}}>Drinks</Text>
 						<TouchableOpacity onPress={this._handleGoBack} style={{justifyContent:'space-between', flexDirection: 'row', alignItems:'center'}}>
@@ -50,8 +46,12 @@ class Category extends React.Component{
 						</TouchableOpacity>
 					</View>
 					{/*show products here*/}
-					<View>
-
+					<View style={{marginHorizontal: 30}}>
+						<CardForSingleProduct />
+						<CardForSingleProduct />
+						<CardForSingleProduct />
+						<CardForSingleProduct />
+						<CardForSingleProduct />
 					</View>
 				</View>
 				</ScrollView>

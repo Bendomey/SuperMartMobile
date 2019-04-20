@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons'
 
 const list = (props) => {
 	return(
-		<TouchableOpacity style={{width: '100%',justifyContent:'space-between', flexDirection: 'row', alignItems: 'center', paddingHorizontal: 5, marginBottom: 12, }}>
+		<TouchableOpacity onPress={props.onclick} style={{width: '100%',justifyContent:'space-between', flexDirection: 'row', alignItems: 'center', paddingHorizontal: 5, marginBottom: 12, }}>
 			<View style={{}}>
 				<Text style={{fontSize: 15, color: '#000', fontWeight: 'bold'}}>{props.title}</Text>
 				<Text style={{fontSize: 12}}>{props.subTitle}</Text>

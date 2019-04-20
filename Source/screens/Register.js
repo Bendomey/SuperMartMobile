@@ -180,7 +180,7 @@ class Register extends React.Component {
               </View>
             </Modal>
 
-          {/*For authentication*/}
+            {/*For authentication*/}
             <Modal isVisible={visibility} animationIn="slideInLeft" animationInTiming={1000} animationOut="bounceOutUp" animationOutTiming={1000}>
               <View style={{ height: 150, width: '100%', backgroundColor: '#fff', borderRadius: 15, }}>
                 <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>

@@ -3,13 +3,15 @@ import {
     createStackNavigator
 } from 'react-navigation'
 import {
-    Profile
+    Profile,
+    EditProfile
 } from 'screens'
 
 
 
 const AppDrawer = createStackNavigator({
-    Profile
+    Profile,
+    EditProfile
 },{
     initialRouteName: 'Profile',
     headerMode: 'none'

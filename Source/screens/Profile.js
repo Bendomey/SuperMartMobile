@@ -3,7 +3,7 @@ import { View, Text, Modal, Platform, TextInput, TouchableOpacity, StatusBar, Im
 import { Header, SingleListProfile, PaymentAndAddress } from 'components'
 import { ProfileStyle, HomeStyle } from 'styles'
 import Icon from 'react-native-vector-icons/Ionicons'
-import { Button } from 'react-native-material-buttons'
+import { Button, TextButton } from 'react-native-material-buttons'
 import AsyncStorage from '@react-native-community/async-storage'
 
 class Profile extends React.Component {
@@ -17,11 +17,18 @@ class Profile extends React.Component {
         }
     }
 
-    componentDidMount(){
-      AsyncStorage.getItem('user')
+    componentWillMount(){
+      console.log("Hello");
+    }
+
+
+    async componentDidMount(){
+      await AsyncStorage.getItem('user')
       .then(data => JSON.parse(data))
       .then((data) =>{
         this.setState({data,load:false})
+        this.forceUpdate()
+
       })
     }
 
@@ -42,6 +49,11 @@ class Profile extends React.Component {
       this.setState({visibility: false})
     }
 
+    _handleEditProfileButton = () => {
+      this.props.navigation.navigate('EditProfile',{
+        userData:this.state.data
+      })
+    }
 
     render() {
       const { visibility, search, data } = this.state
@@ -78,13 +90,12 @@ class Profile extends React.Component {
                       <SingleListProfile title={data.customer_email} iconName='mail' />
                       <SingleListProfile title='*************' iconName='key' />
                       <View style={{marginTop: 10}}></View>
-                      <PaymentAndAddress title="Edit Profile" subTitle="Change profile details" />
+                      <PaymentAndAddress title="Edit Profile" onclick={this._handleEditProfileButton} subTitle="Change profile details" />
                       <PaymentAndAddress title="Payment Method" subTitle="Add  or Remove a Payment Method" />
                       <PaymentAndAddress title="Address" subTitle="Add  or Remove a Delivery Address" />
                       <PaymentAndAddress title="Terms Of Use" />
-                      <TouchableOpacity style={{width: '100%'}}>
-                          <Text style={{color: 'red'}}>Delete My Account</Text>
-                      </TouchableOpacity>
+                      <TextButton title="Delete My Account" titleColor="red"/>
+                      
                   </View>
               </ScrollView>
           </View>)      

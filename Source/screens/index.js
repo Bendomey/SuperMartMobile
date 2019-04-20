@@ -10,6 +10,7 @@ import VerifyNewAccount from './VerifyNewAccount'
 import ForgotPassword from './ForgotPassword'
 import VerifyPhone from './VerifyPhone'
 import ResetPassword from './ResetPassword'
+import EditProfile from './EditProfile'
 
 export{
     Home,
@@ -23,5 +24,6 @@ export{
    	VerifyNewAccount,
    	ForgotPassword,
     VerifyPhone,
-    ResetPassword
+    ResetPassword,
+    EditProfile
 }

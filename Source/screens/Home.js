@@ -14,10 +14,10 @@ class Home extends React.Component {
         }
     }
 
-    async componentDidMount(){
-      let data = await AsyncStorage.getItem('user')
-      console.log(data);
-    }
+    // async componentDidMount(){
+    //   let data = await AsyncStorage.getItem('user')
+    //   console.log(data);
+    // }
     
     _handleOpenDrawer = () => {
       alert('open drawer')

@@ -13,7 +13,7 @@ const AppDrawer = createStackNavigator({
     Home,
     SingleCategory
 },{
-    initialRouteName: 'Home',
+    initialRouteName: 'SingleCategory',
     headerMode: 'none'
 })
 
