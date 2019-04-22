@@ -4,6 +4,12 @@ import { Header, CardForSingleProduct, cardForSingleProduct } from 'components'
 import { HomeStyle } from 'styles'
 import Icon from 'react-native-vector-icons/Ionicons'
 
+const product = {
+	"id":1,
+	"productName":"COCA COLA",
+	"price":20
+}
+
 class Category extends React.Component{
     constructor(props) {
         super(props);
@@ -47,11 +53,8 @@ class Category extends React.Component{
 					</View>
 					{/*show products here*/}
 					<View style={{marginHorizontal: 25}}>
-						<CardForSingleProduct imgSrc={require('../assets/menu1.jpg')} productName='COCA COLA' price={20} />
-						<CardForSingleProduct imgSrc={require('../assets/menu1.jpg')} productName='PEPSI' price={20} />
-						<CardForSingleProduct imgSrc={require('../assets/menu1.jpg')} productName='FANTA' price={20}/>
-						<CardForSingleProduct imgSrc={require('../assets/menu1.jpg')} productName='SPRITE' price={20}/>
-						<CardForSingleProduct imgSrc={require('../assets/menu1.jpg')} productName='MIRINDA' price={20}/>
+						<CardForSingleProduct product={product} />
+						<CardForSingleProduct product={product} />
 					</View>
 				</View>
 				</ScrollView>

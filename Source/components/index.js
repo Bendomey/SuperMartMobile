@@ -5,6 +5,8 @@ import SettingsList from './forSettingsList'
 import CardForProduct from './cardForProduct'
 import CardForCategory from './cardForCategory'
 import CardForSingleProduct from './CardForSingleProduct'
+import SingleCartProduct from './singleCartProduct'
+
 export {
     Header,
     SingleListProfile,
@@ -12,5 +14,6 @@ export {
     SettingsList,
     CardForProduct,
     CardForCategory,
-    CardForSingleProduct
+    CardForSingleProduct,
+    SingleCartProduct
 }
