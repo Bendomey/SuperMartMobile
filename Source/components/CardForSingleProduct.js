@@ -1,19 +1,61 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Image, ToastAndroid } from 'react-native'
+import { RaisedTextButton } from 'react-native-material-buttons'
 
+class CardForSingleProduct extends React.Component {
+	constructor(props) {
+	  super(props);
+	
+	  this.state = {
+	  	numberOfItems:1
+	  };
+	}
 
-const CardForSingleProduct = (props) => {
-    return (
-        <View style={styles.container} >
-           <View></View>
-           <View>
-           	
-           </View>
-           <View style={{backgroundColor: 'red', justifyContent:'center',alignItems:'center',paddingHorizontal:20, paddingVertical:5,borderTopLeftRadius: 10, borderBottomLeftRadius: 10}}>
-           	<Text style={{color:'#fff', fontSize:17, fontFamily: 'calibri'}}>GHc 120</Text>
-           </View>
-        </View>
-    )
+	addItem = () => {
+		this.setState(prevState => ({
+				numberOfItems:prevState.numberOfItems+1
+			})
+		)
+	}
+
+	removeItem = () => {
+		if(this.state.numberOfItems > 1 ){
+			this.setState(prevState => ({
+					numberOfItems:prevState.numberOfItems-1
+				})
+			)
+		}
+	}
+
+	addToCart = () => {
+		ToastAndroid.showWithGravity(`Added ${this.props.productName} to cart`, ToastAndroid.SHORT, ToastAndroid.BOTTOM)
+	}
+
+	render(){
+		const { numberOfItems } = this.state
+		const { imgSrc, productName, price } = this.props
+	    return (
+	        <View style={styles.container} >
+	           <View style={{marginLeft:5}}>
+	            <Image source={imgSrc} style={{height:'100%',width:70}} />
+	           </View>
+	           <View style={styles.middleSection}>
+	           	<Text style={{color:'#464849',fontFamily: 'arial',fontWeight:'bold',fontSize:17}}>{productName}</Text>
+	           	<View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between',width:80}}>
+	           		<TouchableOpacity onPress={this.removeItem} ><Text style={{color:'red',fontSize:30,fontWeight:'bold'}}>-</Text></TouchableOpacity>
+	           		<Text style={{color:'#000',fontSize:17,fontWeight:'bold'}} >{numberOfItems}</Text>
+	           		<TouchableOpacity onPress={this.addItem} ><Text style={{color:'red',fontSize:25,fontWeight:'bold'}}>+</Text></TouchableOpacity>
+	           	</View>
+	           	<View>
+	              <RaisedTextButton title={"ADD TO CART"} onPress={this.addToCart} style={{width: '100%', borderRadius: 5,}} color={"red"} titleColor={'#fff'} shadeColor={"#fff"}/>
+	           	</View>
+	           </View>
+	           <View style={{backgroundColor: 'red', justifyContent:'center',alignItems:'center',paddingHorizontal:5, paddingVertical:5,borderTopLeftRadius: 10, borderBottomLeftRadius: 10}}>
+	           	<Text style={{color:'#fff', fontSize:15, fontFamily: 'calibri'}}>GHc {price}</Text>
+	           </View>
+	        </View>
+	    )
+	}
 }
 
 const styles = StyleSheet.create({
@@ -26,8 +68,14 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems:'center',
-		marginBottom:30
+		marginBottom:30,
+		paddingVertical:10
 	},
+	middleSection:{
+		justifyContent:'space-between',
+		alignItems:'center',
+		height:'100%'
+	}
 })
 
 export default CardForSingleProduct

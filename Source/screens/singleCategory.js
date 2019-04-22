@@ -46,12 +46,12 @@ class Category extends React.Component{
 						</TouchableOpacity>
 					</View>
 					{/*show products here*/}
-					<View style={{marginHorizontal: 30}}>
-						<CardForSingleProduct />
-						<CardForSingleProduct />
-						<CardForSingleProduct />
-						<CardForSingleProduct />
-						<CardForSingleProduct />
+					<View style={{marginHorizontal: 25}}>
+						<CardForSingleProduct imgSrc={require('../assets/menu1.jpg')} productName='COCA COLA' price={20} />
+						<CardForSingleProduct imgSrc={require('../assets/menu1.jpg')} productName='PEPSI' price={20} />
+						<CardForSingleProduct imgSrc={require('../assets/menu1.jpg')} productName='FANTA' price={20}/>
+						<CardForSingleProduct imgSrc={require('../assets/menu1.jpg')} productName='SPRITE' price={20}/>
+						<CardForSingleProduct imgSrc={require('../assets/menu1.jpg')} productName='MIRINDA' price={20}/>
 					</View>
 				</View>
 				</ScrollView>
