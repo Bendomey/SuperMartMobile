@@ -12,6 +12,8 @@ import AsyncStorage from '@react-native-community/async-storage'
 class Login extends React.Component {
     _isMounted = false;
     _modalIsMounted = false;
+    subscription = null
+    listener = null
     constructor(props) {
         super(props);
         this.state = {
@@ -26,19 +28,20 @@ class Login extends React.Component {
 
     componentDidMount(){
       this._isMounted = true;
-      const listener = data => {
+      listener = data => {
         NetInfo.isConnected.fetch().then(isConnected => {
           this.setState({isConnected})
         })
       }
       if(this._isMounted){
-        const subscription = NetInfo.addEventListener('connectionChange',listener);     
+        subscription = NetInfo.addEventListener('connectionChange',listener);     
       }
     }
 
     componentWillUnmount(){
       this._isMounted = false;
       this._modalIsMounted =false;
+      subscription.NetInfo.removeEventListener('connectionChange',listener)
     } 
 
     storeData = (key, value) => {
@@ -173,7 +176,7 @@ class Login extends React.Component {
             </Modal>
 
           {/*For authentication*/}
-            <Modal isVisible={visibility} animationIn="slideInLeft" animationInTiming={1000} animationOut="bounceOutUp" animationOutTiming={1000}>
+            <Modal isVisible={visibility} animationIn="slideInLeft" animationInTiming={1000} animationOut="bounceOutUp" animationOutTiming={1000} onBackButtonPress={()=>this.setState({visibility:!visibility})}>
               <View style={{ height: 150, width: '100%', backgroundColor: '#fff', borderRadius: 15, }}>
                 <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
                   <ActivityIndicator size={50} color='red' />

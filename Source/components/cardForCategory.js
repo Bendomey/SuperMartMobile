@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
 const cardForCategory = (props) => {
 	return(
 		<View style={styles.container} >
-        	<Image source={require('../assets/menu1.jpg')} style={styles.image} />
+        	<Image source={props.image} style={styles.image} />
 			<TouchableOpacity onPress={props.onClickOnCat} style={{width: 92, justifyContent: 'center'}}>
 				<Text style={{textAlign:'center'}} >{props.catName}</Text>	
 			</TouchableOpacity>

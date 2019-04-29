@@ -181,7 +181,7 @@ class Register extends React.Component {
             </Modal>
 
             {/*For authentication*/}
-            <Modal isVisible={visibility} animationIn="slideInLeft" animationInTiming={1000} animationOut="bounceOutUp" animationOutTiming={1000}>
+            <Modal isVisible={visibility} animationIn="slideInLeft" animationInTiming={1000} animationOut="bounceOutUp" animationOutTiming={1000} onBackButtonPress={()=>this.setState({visibility:!visibility})}>
               <View style={{ height: 150, width: '100%', backgroundColor: '#fff', borderRadius: 15, }}>
                 <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
                   <ActivityIndicator size={50} color='red' />

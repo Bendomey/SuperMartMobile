@@ -42,7 +42,7 @@ class SingleCartProduct extends Component {
 	            <Image source={require('../assets/menu1.jpg')} style={{height:'100%',width:70}} />
 	           </View>
 	           <View style={styles.middleSection}>
-	           	<Text style={{color:'#464849',fontFamily: 'arial',fontWeight:'bold',fontSize:17}}>{product.productName}</Text>
+	           	<Text style={{color:'#464849',fontFamily: 'arial',fontWeight:'bold',fontSize:17}}>{product.product_name}</Text>
 	           	<View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between',width:80}}>
 	           		<TouchableOpacity onPress={this.removeItem} ><Text style={{color:'red',fontSize:30,fontWeight:'bold'}}>-</Text></TouchableOpacity>
 	           		<Text style={{color:'#000',fontSize:17,fontWeight:'bold'}} >1</Text>
@@ -53,7 +53,7 @@ class SingleCartProduct extends Component {
 	           	</View>
 	           </View>
 	           <View style={{backgroundColor: 'red', justifyContent:'center',alignItems:'center',paddingHorizontal:5, paddingVertical:5,borderTopLeftRadius: 10, borderBottomLeftRadius: 10}}>
-	           	<Text style={{color:'#fff', fontSize:15, fontFamily: 'calibri'}}>GHc {product.price}</Text>
+	           	<Text style={{color:'#fff', fontSize:15, fontFamily: 'calibri'}}>GHc {product.product_price}</Text>
 	           </View>
 	        </View>
 	    )

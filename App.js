@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, Text, View, YellowBox} from 'react-native';
 import { AppContainer } from 'navigation'
 import { ResetPassword } from 'screens'
 import SplashScreen from 'react-native-splash-screen'
@@ -10,6 +10,8 @@ export default class App extends Component {
 
   componentDidMount() {
     SplashScreen.hide();
+    YellowBox.ignoreWarnings(['Warning:','Require cycle:'])
+  
   }
   
   render() {

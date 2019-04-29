@@ -1,22 +1,26 @@
 import React from 'react'
-import { View, Text, Modal, Platform, TextInput, TouchableOpacity, StatusBar, ScrollView } from 'react-native'
+import { View, Text, Modal, Platform, TextInput, TouchableOpacity, StatusBar, ScrollView, ActivityIndicator } from 'react-native'
 import { Header, SettingsList } from 'components'
 import { ProfileStyle, HomeStyle } from 'styles'
 import Icon from 'react-native-vector-icons/Ionicons'
 import { TextButton } from 'react-native-material-buttons'
 import AsyncStorage from '@react-native-community/async-storage'
+import ModalLogout from 'react-native-modal'
 
 class Settings extends React.Component{
    constructor(props) {
         super(props)
         this.state = {
           visibility: false,
-          search: ''
+          search: '',
+          logout:false
         }
     }
 
     handleLogout = () => {
+      this.setState({logout: true})
       AsyncStorage.clear();
+      this.setState({logout:false})
       this.props.navigation.navigate('Login');
     }
 
@@ -53,6 +57,15 @@ class Settings extends React.Component{
               </View>
             </Modal>
 
+            {/*For authentication*/}
+              <ModalLogout isVisible={this.state.logout} animationIn="slideInLeft" animationInTiming={1000} animationOut="bounceOutUp" animationOutTiming={1000}>
+                <View style={{ height: 150, width: '100%', backgroundColor: '#fff', borderRadius: 15, }}>
+                  <View style={{flex:1,justifyContent: 'center', alignItems: 'center'}}>
+                    <ActivityIndicator size={50} color='red' />
+                  </View>
+                </View>
+              </ModalLogout>
+
             {/*this is for the view itself*/}
             <ScrollView style={ProfileStyle.mainDetails} showsVerticalScrollIndicator={false}>
                 <View>
@@ -66,6 +79,7 @@ class Settings extends React.Component{
                 </View>
                 <TextButton title="Sign Out" onPress={this.handleLogout} titleColor="red"/>
             </ScrollView>
+            
         </View>
       )
     }
