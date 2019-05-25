@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Modal, Platform, TextInput, TouchableOpacity, StatusBar, ScrollView, ActivityIndicator } from 'react-native'
+import { Alert, View, Text, Modal, Platform, TextInput, TouchableOpacity, StatusBar, ScrollView, ActivityIndicator } from 'react-native'
 import { Header, SettingsList } from 'components'
 import { ProfileStyle, HomeStyle } from 'styles'
 import Icon from 'react-native-vector-icons/Ionicons'
@@ -22,6 +22,14 @@ class Settings extends React.Component{
       AsyncStorage.clear();
       this.setState({logout:false})
       this.props.navigation.navigate('Login');
+    }
+
+    confirmSignOut = () => {
+      Alert.alert(
+        "Logout",
+        "Are you sure you want to logout",
+        ['OK','Cancel']
+      )
     }
 
     _handleOpenDrawer = () => {
@@ -77,7 +85,7 @@ class Settings extends React.Component{
                     <SettingsList title="Legal" />
                     <SettingsList title="How to use app" />
                 </View>
-                <TextButton title="Sign Out" onPress={this.handleLogout} titleColor="red"/>
+                <TextButton title="Sign Out" onPress={this.confirmSignOut} titleColor="red"/>
             </ScrollView>
             
         </View>

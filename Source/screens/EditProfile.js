@@ -9,6 +9,7 @@ import NetInfo from "@react-native-community/netinfo"
 import { emailChecker } from 'constants'
 import { UPDATE_PROFILE, UPDATE_PASSWORD } from 'react-native-dotenv'
 import AsyncStorage from '@react-native-community/async-storage'
+import fetch from 'react-native-fetch-polyfill'
 
 export default class EditProfile extends React.Component{
 	subscription = null
@@ -26,6 +27,7 @@ export default class EditProfile extends React.Component{
 	  	contact:'',
 	  	email:'',
 	  	password:'',
+      image:require('../assets/avatar.jpg'),
 	  	confirmPassword:'',
 	  	errorMsg:'',
 	  	oldPassword:'',
@@ -90,7 +92,7 @@ export default class EditProfile extends React.Component{
     }
 
 	saveProfileChanges = () => {
-		const { fullName, contact, email, isConnected,id } = this.state
+		const { fullName, contact, email, isConnected, id, image } = this.state
         //check the network
         const listener = data => {
           NetInfo.isConnected.fetch().then(isConnected => {
@@ -111,6 +113,7 @@ export default class EditProfile extends React.Component{
           		this.setState({errorMsgProfile: '', visibility: true});
           		//go to server
           		fetch(UPDATE_PROFILE,{
+                timeout:3000,
           			method:'POST',
           			headers:{
           				'Accept':'application/json',
@@ -120,7 +123,8 @@ export default class EditProfile extends React.Component{
           				id,
           				name:fullName,
           				email,
-          				contact
+          				contact,
+                  customer_img:image
           			})
           		})
           		.then(data => data.json)
@@ -135,6 +139,9 @@ export default class EditProfile extends React.Component{
           				this.setState({visibility:false,errorMsgProfile:'User doesnt exist'})
           			}
           		})
+              .catch(err => {
+                this.setState({visibility:false,errorMsgProfile:"No Internet Connection"})
+              })
 
         	}
         }else{
@@ -165,6 +172,7 @@ export default class EditProfile extends React.Component{
           		this.setState({errorMsgPassword: '', visibility: true});
         		//move to the server side
         		fetch(UPDATE_PASSWORD,{
+              timeout:3000,
         			method:'POST',
         			headers:{
         				'Accept':'application/json',
@@ -191,6 +199,9 @@ export default class EditProfile extends React.Component{
         				this.setState({showMessage:false,visibility:false,errorMsgPassword:'Old password entered is wrong'})
         			}
         		})
+            .catch(err => {
+              this.setState({visibility:false,errorMsgPassword:"No Internet Connection"})
+            })
         	}
         }else{
         	this.setState({networkVisibility:true})
@@ -230,7 +241,7 @@ export default class EditProfile extends React.Component{
 
 
 	render() {
-		const { showMessage, visibilitySearch, visibility, networkVisibility, search, fullName, contact, email, password, confirmPassword, errorMsgProfile, oldPassword, errorMsgPassword } = this.state
+		const { image, showMessage, visibilitySearch, visibility, networkVisibility, search, fullName, contact, email, password, confirmPassword, errorMsgProfile, oldPassword, errorMsgPassword } = this.state
 		return (
 			<View style={HomeStyle.container} >
 				<StatusBar backgroundColor="red" barStyle="light-content"/>
@@ -238,7 +249,7 @@ export default class EditProfile extends React.Component{
 	        	<ScrollView>
 	        		{(showMessage === true) && this.showMessage()}
 	          		<View style={{justifyContent:'center',alignItems:'center', marginVertical:20}}>
-		                <Image source={require('../assets/menu1.jpg')} style={ProfileStyle.image} />
+		                <Image source={image} style={ProfileStyle.image} />
 		            </View>
 		            <View style={{marginHorizontal: 30, marginVertical:5, borderBottomWidth:1, paddingRight: 30, paddingBottom: 5, justifyContent:'space-between',alignItems: 'center', flexDirection:'row'}}>
 		            	<Text style={{color: '#000', fontWeight: 'bold'}}>PROFILE SETTINGS</Text>

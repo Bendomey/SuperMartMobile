@@ -8,33 +8,39 @@ class SingleCartProduct extends Component {
 	constructor(props) {
 	  super(props);
 
-	  // this.props = {
-	  // 	numberOfItems:1
-	  // }
+	  this.props = {
+	  	numberOfItems:null
+	  }
 	}
 
-	// addItem = () => {
-	// 	this.setState(prevState => ({
-	// 			numberOfItems:prevState.numberOfItems+1
-	// 		})
-	// 	)
-	// }
+	componentDidMount(){
+		this.setState({
+			numberOfItems: this.props.product.numberOfItems
+		})
+	}
 
-	// removeItem = () => {
-	// 	if(this.state.numberOfItems > 1 ){
-	// 		this.setState(prevState => ({
-	// 				numberOfItems:prevState.numberOfItems-1
-	// 			})
-	// 		)
-	// 	}
-	// }
+	addItem = () => {
+		this.setState(prevState => ({
+				numberOfItems:prevState.numberOfItems+1
+			})
+		)
+	}
+
+	removeItem = () => {
+		if(this.state.numberOfItems > 1 ){
+			this.setState(prevState => ({
+					numberOfItems:prevState.numberOfItems-1
+				})
+			)
+		}
+	}
 
 	removeFromCart = () => {
 		this.props.removeItemFromCart(this.props.product)
 	}
 
 	render(){
-		// const { numberOfItems } = this.state
+		const { numberOfItems } = this.state
 		const { product } = this.props
 	    return (
 	        <View style={styles.container} >
@@ -45,7 +51,7 @@ class SingleCartProduct extends Component {
 	           	<Text style={{color:'#464849',fontFamily: 'arial',fontWeight:'bold',fontSize:17}}>{product.product_name}</Text>
 	           	<View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between',width:80}}>
 	           		<TouchableOpacity onPress={this.removeItem} ><Text style={{color:'red',fontSize:30,fontWeight:'bold'}}>-</Text></TouchableOpacity>
-	           		<Text style={{color:'#000',fontSize:17,fontWeight:'bold'}} >1</Text>
+	           		<Text style={{color:'#000',fontSize:17,fontWeight:'bold'}} >{numberOfItems}</Text>
 	           		<TouchableOpacity onPress={this.addItem} ><Text style={{color:'red',fontSize:25,fontWeight:'bold'}}>+</Text></TouchableOpacity>
 	           	</View>
 	           	<View>
@@ -68,6 +74,7 @@ const mapDispatchToProps = dispatch => {
 		})
 	}
 }
+
 SingleCartProduct = Animatable.createAnimatableComponent(SingleCartProduct)
 export default connect(null,mapDispatchToProps)(SingleCartProduct)
 

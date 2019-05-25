@@ -57,55 +57,55 @@ class Profile extends React.Component {
 
     render() {
       const { visibility, search, data } = this.state
-      
-        if(this.state.load == false){
           return (
           <View style={ProfileStyle.container}>
               <StatusBar backgroundColor="red" barStyle="light-content"/>
               <Header _openDrawer={this._handleOpenDrawer} openSearchStack={this._handleOpenSearchStack} openNotification={this._handleOpenNotificationModal} / >
-              <Modal visible={visibility} animationType={"fade"}>
-                <View style={HomeStyle.modalHeader}>
-                  <TouchableOpacity onPress={this._handleCloseSearchModal}>
-                    <Icon name={Platform.OS == 'android' ? 'md-arrow-round-back' : 'ios-arrow-round-back'} size={Platform.OS == 'android' ? 25 : 1} color={'#000'} />
-                  </TouchableOpacity>
-                  <TextInput autoFocus={true} returnKeyType={'search'} style={HomeStyle.textViewNode} placeholderTextColor={"black"} value={search} onChangeText={(value) => this.setState({search: value})} placeholder={"Search something..."} />
-                </View>
-              </Modal>
-
-              {/*this is for the view itself*/}
-              <ScrollView style={ProfileStyle.mainDetails} showsVerticalScrollIndicator={false}>
-                  <View style={ProfileStyle.profileImageView}>
-                      <View style={{justifyContent: 'space-between', alignItems:'center', flexDirection:'row', paddingHorizontal: 50, width: '100%'}}>
-                          <View>
-                              <Image source={require('../assets/menu1.jpg')} style={ProfileStyle.image} />
-                          </View>
-                          <View style={ProfileStyle.textView}>
-                              <Text style={ProfileStyle.UserName}>{data.customer_name}</Text>
+              {
+                (this.state.load == false) ? 
+                  <ScrollView style={ProfileStyle.mainDetails} showsVerticalScrollIndicator={false}>
+                      <View style={ProfileStyle.profileImageView}>
+                          <View style={{justifyContent: 'space-between', alignItems:'center', flexDirection:'row', paddingHorizontal: 50, width: '100%'}}>
+                              <View>
+                                  <Image source={require('../assets/menu1.jpg')} style={ProfileStyle.image} />
+                              </View>
+                              <View style={ProfileStyle.textView}>
+                                  <Text style={ProfileStyle.UserName}>{data.customer_name}</Text>
+                              </View>
                           </View>
                       </View>
+                      <View style={ProfileStyle.customerDetails}>                
+                          <SingleListProfile title={data.customer_name} iconName='contact' />
+                          <SingleListProfile title={data.customer_contact} iconName='call' />
+                          <SingleListProfile title={data.customer_email} iconName='mail' />
+                          <SingleListProfile title='*************' iconName='key' />
+                          <View style={{marginTop: 10}}></View>
+                          <PaymentAndAddress title="Edit Profile" onclick={this._handleEditProfileButton} subTitle="Change profile details" />
+                          <PaymentAndAddress title="Payment Method" subTitle="Add  or Remove a Payment Method" />
+                          <PaymentAndAddress title="Address" subTitle="Add  or Remove a Delivery Address" />
+                          <PaymentAndAddress title="Terms Of Use" />
+                          <TextButton title="Delete My Account" titleColor="red"/>
+                          
+                      </View>
+
+                      <Modal visible={visibility} animationType={"fade"}>
+                        <View style={HomeStyle.modalHeader}>
+                          <TouchableOpacity onPress={this._handleCloseSearchModal}>
+                            <Icon name={Platform.OS == 'android' ? 'md-arrow-round-back' : 'ios-arrow-round-back'} size={Platform.OS == 'android' ? 25 : 1} color={'#000'} />
+                          </TouchableOpacity>
+                          <TextInput autoFocus={true} returnKeyType={'search'} style={HomeStyle.textViewNode} placeholderTextColor={"black"} value={search} onChangeText={(value) => this.setState({search: value})} placeholder={"Search something..."} />
+                        </View>
+                      </Modal>
+                  </ScrollView>
+                :
+                  <View style={{justifyContent:'center',alignItems:'center', marginTop:50}}>
+                    <ActivityIndicator />
                   </View>
-                  <View style={ProfileStyle.customerDetails}>                
-                      <SingleListProfile title={data.customer_name} iconName='contact' />
-                      <SingleListProfile title={data.customer_contact} iconName='call' />
-                      <SingleListProfile title={data.customer_email} iconName='mail' />
-                      <SingleListProfile title='*************' iconName='key' />
-                      <View style={{marginTop: 10}}></View>
-                      <PaymentAndAddress title="Edit Profile" onclick={this._handleEditProfileButton} subTitle="Change profile details" />
-                      <PaymentAndAddress title="Payment Method" subTitle="Add  or Remove a Payment Method" />
-                      <PaymentAndAddress title="Address" subTitle="Add  or Remove a Delivery Address" />
-                      <PaymentAndAddress title="Terms Of Use" />
-                      <TextButton title="Delete My Account" titleColor="red"/>
-                      
-                  </View>
-              </ScrollView>
-          </View>)      
-        }else{
-          return (
-          <View>
-            <ActivityIndicator />
-          </View>)
-        }
-    }
+              }
+              
+          </View>
+          )
+  }
 }
 
 export default Profile

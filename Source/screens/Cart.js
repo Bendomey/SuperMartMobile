@@ -60,7 +60,7 @@ class Cart extends React.Component{
                             <SingleCartProduct animation="slideOutDown" key={index} product={item} />
                         )
                     })
-                    // <Text>Total</Text> 
+                    // <Text>Total</Text>
                     :
                     <View style={{justifyContent:'center',alignItems:'center'}}>
                         <Text style={{color:'#999a9b',fontWeight:'bold'}}>Nothing To Show</Text>

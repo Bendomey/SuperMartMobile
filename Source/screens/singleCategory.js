@@ -108,7 +108,7 @@ class Category extends React.Component{
 
     _renderItem = (data) => {
     	return (
-			<CardForSingleProduct product={data.item} />
+			 <CardForSingleProduct product={data.item} />
     	)
     }
 
@@ -180,13 +180,13 @@ class Category extends React.Component{
 				}
 				
 				<Modal visible={visibility} animationType={"fade"}>
-		            <View style={HomeStyle.modalHeader}>
-		              <TouchableOpacity onPress={this._handleCloseSearchModal}>
-		                <Icon name={Platform.OS == 'android' ? 'md-arrow-round-back' : 'ios-arrow-round-back'} size={Platform.OS == 'android' ? 25 : 1} color={'#000'} />
-		              </TouchableOpacity>
-		              <TextInput autoFocus={true} returnKeyType={'search'} style={HomeStyle.textViewNode} placeholderTextColor={"black"} value={search} onChangeText={(value) => this.setState({search: value})} placeholder={"Search something..."} />
-		            </View>
-	          	</Modal> 
+          <View style={HomeStyle.modalHeader}>
+            <TouchableOpacity onPress={this._handleCloseSearchModal}>
+              <Icon name={Platform.OS == 'android' ? 'md-arrow-round-back' : 'ios-arrow-round-back'} size={Platform.OS == 'android' ? 25 : 1} color={'#000'} />
+            </TouchableOpacity>
+            <TextInput autoFocus={true} returnKeyType={'search'} style={HomeStyle.textViewNode} placeholderTextColor={"black"} value={search} onChangeText={(value) => this.setState({search: value})} placeholder={"Search something..."} />
+          </View>
+      	</Modal> 
 			</View>			
 		);
 	}

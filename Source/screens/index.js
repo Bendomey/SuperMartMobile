@@ -11,6 +11,7 @@ import ForgotPassword from './ForgotPassword'
 import VerifyPhone from './VerifyPhone'
 import ResetPassword from './ResetPassword'
 import EditProfile from './EditProfile'
+import SingleProduct from './SingleProduct'
 
 export{
     Home,
@@ -25,5 +26,6 @@ export{
    	ForgotPassword,
     VerifyPhone,
     ResetPassword,
-    EditProfile
+    EditProfile,
+    SingleProduct
 }

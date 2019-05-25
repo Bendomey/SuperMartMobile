@@ -29,8 +29,10 @@ class CardForSingleProduct extends Component {
 	}
 
 	addToCart = () => {
-		this.props.addItemsToCart(this.props.product)
-		ToastAndroid.showWithGravity(`Added ${this.props.product.product_name} to cart`, ToastAndroid.SHORT, ToastAndroid.BOTTOM)
+		const { product } = this.props
+		product.numberOfItems = this.state.numberOfItems;
+		this.props.addItemsToCart(product)
+		ToastAndroid.showWithGravity(`Added ${product.product_name} to cart`, ToastAndroid.SHORT, ToastAndroid.BOTTOM)
 	}
 
 	render(){

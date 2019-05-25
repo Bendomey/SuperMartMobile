@@ -116,6 +116,7 @@ class Home extends React.Component {
       if(!isConnected){
         return(
           <View style={{flex:1}}>
+            <StatusBar backgroundColor="red" barStyle="light-content"/>
             <Header _openDrawer={this._handleOpenDrawer} openSearchStack={this._handleOpenSearchStack} openNotification={this._handleOpenNotificationModal} / >
 
           <View style={{flex:1,justifyContent:'center',alignItems:'center', }}>

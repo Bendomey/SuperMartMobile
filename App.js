@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, YellowBox} from 'react-native';
+import {StyleSheet, YellowBox} from 'react-native';
 import { AppContainer } from 'navigation'
-import { ResetPassword } from 'screens'
+import { SingleProduct } from 'screens'
 import SplashScreen from 'react-native-splash-screen'
 import {Provider} from 'react-redux'
 import store from './Source/store'
@@ -11,14 +11,15 @@ export default class App extends Component {
   componentDidMount() {
     SplashScreen.hide();
     YellowBox.ignoreWarnings(['Warning:','Require cycle:'])
-  
+
   }
-  
+
   render() {
     return (
       <Provider store={store}>
         <AppContainer />
       </Provider>
+      // <SingleProduct />
     )
   }
 }
