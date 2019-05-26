@@ -3,7 +3,7 @@ import { View, Text, Modal, Platform, TextInput, TouchableOpacity, StatusBar, Sc
 import { Header, CardForProduct, CardForCategory } from 'components'
 import { HomeStyle } from 'styles'
 import Icon from 'react-native-vector-icons/Ionicons'
-import { CATEGORIES } from 'react-native-dotenv'
+import { CATEGORIES, DOMAIN } from 'react-native-dotenv'
 import NetInfo from "@react-native-community/netinfo"
 import fetch from 'react-native-fetch-polyfill'
 
@@ -117,7 +117,7 @@ class Home extends React.Component {
         return(
           <View style={{flex:1}}>
             <StatusBar backgroundColor="red" barStyle="light-content"/>
-            <Header _openDrawer={this._handleOpenDrawer} openSearchStack={this._handleOpenSearchStack} openNotification={this._handleOpenNotificationModal} / >
+            <Header _openDrawer={this._handleOpenDrawer} showBack={false} openSearchStack={this._handleOpenSearchStack} openNotification={this._handleOpenNotificationModal} / >
 
           <View style={{flex:1,justifyContent:'center',alignItems:'center', }}>
             <Image source={require('../assets/error.png')} style={{height:130,width:130}} />
@@ -176,7 +176,7 @@ class Home extends React.Component {
                           {      
                             this.state.catData.map(data => {
                               return (
-                                  <CardForCategory key={data.id} image={{uri:'https://supermartgh.000webhostapp.com/storage/'+data.category_img}} onClickOnCat={() => this._handleGoToProduct(data.category_name)} catName={data.category_name} />
+                                  <CardForCategory key={data.id} image={{uri:DOMAIN+data.category_img}} onClickOnCat={() => this._handleGoToProduct(data.category_name)} catName={data.category_name} />
                               )
                             })
                           }

@@ -8,16 +8,16 @@ class SingleCartProduct extends Component {
 	constructor(props) {
 	  super(props);
 
-	  this.props = {
-	  	numberOfItems:null
+	  this.state = {
+	  	numberOfItems:this.props.product.numberOfItems
 	  }
 	}
 
-	componentDidMount(){
-		this.setState({
-			numberOfItems: this.props.product.numberOfItems
-		})
-	}
+	// componentDidMount(){
+	// 	this.setState({
+	// 		numberOfItems: this.props.product.numberOfItems
+	// 	})
+	// }
 
 	addItem = () => {
 		this.setState(prevState => ({
@@ -40,7 +40,7 @@ class SingleCartProduct extends Component {
 	}
 
 	render(){
-		const { numberOfItems } = this.state
+		// const { numberOfItems } = this.state
 		const { product } = this.props
 	    return (
 	        <View style={styles.container} >
@@ -51,7 +51,7 @@ class SingleCartProduct extends Component {
 	           	<Text style={{color:'#464849',fontFamily: 'arial',fontWeight:'bold',fontSize:17}}>{product.product_name}</Text>
 	           	<View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-between',width:80}}>
 	           		<TouchableOpacity onPress={this.removeItem} ><Text style={{color:'red',fontSize:30,fontWeight:'bold'}}>-</Text></TouchableOpacity>
-	           		<Text style={{color:'#000',fontSize:17,fontWeight:'bold'}} >{numberOfItems}</Text>
+	           		<Text style={{color:'#000',fontSize:17,fontWeight:'bold'}} >{this.state.numberOfItems}</Text>
 	           		<TouchableOpacity onPress={this.addItem} ><Text style={{color:'red',fontSize:25,fontWeight:'bold'}}>+</Text></TouchableOpacity>
 	           	</View>
 	           	<View>

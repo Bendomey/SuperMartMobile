@@ -28,7 +28,16 @@ class Settings extends React.Component{
       Alert.alert(
         "Logout",
         "Are you sure you want to logout",
-        ['OK','Cancel']
+        [
+          {
+            text:'No',
+          },
+          {
+            text:'Yes',
+            onPress:() => this.handleLogout
+          }
+        ],
+        {cancelable: false},
       )
     }
 
@@ -85,7 +94,7 @@ class Settings extends React.Component{
                     <SettingsList title="Legal" />
                     <SettingsList title="How to use app" />
                 </View>
-                <TextButton title="Sign Out" onPress={this.confirmSignOut} titleColor="red"/>
+                <TextButton title="Sign Out" onPress={this.handleLogout} titleColor="red"/>
             </ScrollView>
             
         </View>

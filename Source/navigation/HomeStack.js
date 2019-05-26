@@ -4,14 +4,16 @@ import {
 } from 'react-navigation'
 import {
     Home,
-    SingleCategory
+    SingleCategory,
+    SingleProduct
 } from 'screens'
 
 
 
 const AppDrawer = createStackNavigator({
     Home,
-    SingleCategory
+    SingleCategory,
+    SingleProduct
 },{
     initialRouteName: 'Home',
     headerMode: 'none'

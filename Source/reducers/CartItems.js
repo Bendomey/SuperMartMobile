@@ -1,11 +1,11 @@
 const CartItems = (state = [], action) => {
 	switch(action.type){
 		case 'ADD_TO_CART':
-			for(i in state.id){
-				if(i == action.payload.id){
-					return[...state]
+			for(i = 0; i < state.length; i++){
+				if(state[`${i}`].id === action.payload.id){
+					return state;
 				}
-			}		
+			}
 			return [...state,action.payload]
 		case 'EMPTY_CART':
 			return [...state,[]]

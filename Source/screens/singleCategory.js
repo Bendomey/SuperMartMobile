@@ -8,12 +8,6 @@ import NetInfo from "@react-native-community/netinfo"
 import fetch from 'react-native-fetch-polyfill'
 
 
-const product = {
-	"id":1,
-	"productName":"COCA COLA",
-	"price":20
-}
-
 class Category extends React.Component{
     constructor(props) {
         super(props);
@@ -29,9 +23,6 @@ class Category extends React.Component{
         }
     }
 
-    componentWillMount(){
-    	this.setState({})
-    }
 
     componentDidMount(){
       NetInfo.isConnected.fetch().then(isConnected => {
@@ -106,9 +97,15 @@ class Category extends React.Component{
     	this.props.navigation.navigate('Home');
     }
 
+    handleOpenSingleProduct = (data) => {
+      this.props.navigation.navigate('SingleProduct',{
+        productData:data
+      })
+    }
+
     _renderItem = (data) => {
     	return (
-			 <CardForSingleProduct product={data.item} />
+			 <CardForSingleProduct product={data.item} handleOpenSingleProduct={() => this.handleOpenSingleProduct(data.item)} />
     	)
     }
 
@@ -117,7 +114,7 @@ class Category extends React.Component{
 		return (
 			<View style={HomeStyle.container}>
 	    	    <StatusBar backgroundColor="red" barStyle="light-content"/>
-		        <Header _openDrawer={this._handleOpenDrawer} openSearchStack={this._handleOpenSearchStack} openNotification={this._handleOpenNotificationModal} / >
+		        <Header _openDrawer={this._handleOpenDrawer} showBack={false} openSearchStack={this._handleOpenSearchStack} openNotification={this._handleOpenNotificationModal} / >
 				{
 					(isConnected == false) ?
 						<View style={{flex:1,justifyContent:'center',alignItems:'center', }}>
@@ -158,7 +155,7 @@ class Category extends React.Component{
 											{
 												(data.length == 0) ?
 													<View style={{justifyContent:'center',alignItems:'center',marginTop:30}}>
-													<Text style={{fontSize:15}}>Products from this category is unavailable</Text>
+													<Text style={{fontSize:15}}>No Products available at the moment</Text>
 													</View>
 												:
 													<FlatList 
